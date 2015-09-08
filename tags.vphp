@@ -1,0 +1,5 @@
+<meta name="title" content="<?php iv('title'); ?>"/>
+<meta name="description" content="<?php iv('description'); ?>"/>
+<meta name="keywords" content="<?php iv('keywords'); ?>"/>
+
+<title><?php iv('title'); ?></title>
