@@ -1,0 +1,1 @@
+<meta itemprop="<?php iv('name'); ?>" content="<?php iv('content'); ?>"/>
