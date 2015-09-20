@@ -1,0 +1,1 @@
+<meta property="<?php iv('name'); ?>" content="<?php iv('content'); ?>"/>
