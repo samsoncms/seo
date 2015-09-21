@@ -1,12 +1,34 @@
 {
-  "name": "samsoncms/seo_tags",
-  "author": "Molodyko Ruslan <molodyko@samsonos.com>",
+  "name": "samsoncms/seo",
+  "description": "SamsonCMS search engine optimization",
+  "keywords": [
+    "seo",
+    "search engines",
+    "samsoncms"
+  ],
+  "authors": [
+    {
+      "name": "Molodyko Ruslan",
+      "email": "molodyko@samsonos.com"
+    },
+    {
+      "name": "Vitaly Iegorov",
+      "email": "egorov@samsonos.com"
+    }
+  ],
   "require": {
     "samsonos/cms_api": "*"
   },
+  "minimum-stability": "dev",
   "license": "Open Software License (OSL) v 3.0",
   "homepage": "http://samsonos.com/",
   "autoload": {
-    "classmap": ["src/"]
+    "classmap": ["src/"],
+    "psr-4": {
+      "samsoncms\\seo\\": "src/"
+    }
+  },
+  "config":{
+    "github-protocols":["https"]
   }
 }
