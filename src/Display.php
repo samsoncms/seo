@@ -6,9 +6,9 @@
  * Time: 17:40
  */
 
-namespace samson\cms\seo;
+namespace samsoncms\seo;
 
-use samson\cms\seo\schema\Schema;
+use samsoncms\seo\schema\Schema;
 
 class Display {
 

@@ -1,15 +1,15 @@
 <?php
 
-namespace samson\cms\seo;
+namespace samsoncms\seo;
 
 use samson\activerecord\dbRecord;
 use samson\activerecord\structure;
 use samson\cms\CMSMaterial;
-use samson\cms\seo\Migrate;
-use samson\cms\seo\schema\Facebook;
-use samson\cms\seo\schema\Main;
-use samson\cms\seo\schema\Schema;
-use samson\cms\seo\tab\Tab;
+use samsoncms\seo\Migrate;
+use samsoncms\seo\schema\Facebook;
+use samsoncms\seo\schema\Main;
+use samsoncms\seo\schema\Schema;
+use samsoncms\seo\tab\Tab;
 use samson\cms\web\navigation\CMSNav;
 use samson\core\CompressableService;
 use samsonphp\event\Event;
@@ -54,7 +54,7 @@ class Core extends CompressableService
 
         $this->query = dbQuery('structure');
 
-        $migrate = new \samson\cms\seo\Migrate($this->query);
+        $migrate = new \samsoncms\seo\Migrate($this->query);
 
         // Execute migrations
         $migrate->migrate();

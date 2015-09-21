@@ -6,11 +6,11 @@
  * Time: 16:13
  */
 
-namespace samson\cms\seo;
+namespace samsoncms\seo;
 
-use samson\cms\seo\schema\Facebook;
-use samson\cms\seo\schema\Main;
-use samson\cms\seo\schema\Twitter;
+use samsoncms\seo\schema\Facebook;
+use samsoncms\seo\schema\Main;
+use samsoncms\seo\schema\Twitter;
 
 /**
  * Class Migrate for create structures in db
@@ -32,7 +32,7 @@ class Migrate
         $this->query = $query;
 
         // Get all structures
-        $this->structures = \samson\cms\seo\schema\Schema::getSchemas();
+        $this->structures = \samsoncms\seo\schema\Schema::getSchemas();
     }
 
     /**
