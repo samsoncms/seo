@@ -17,7 +17,7 @@ class Meta extends Schema{
     public $fields = array(
         array(
             'Name' => '__SEO_Keywords',
-            'Description' => 'Keywords',
+            'Description' => 'Ключевые слова',
             'Type' => '0',
         ),
     );

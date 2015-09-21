@@ -25,18 +25,18 @@ class Main extends Schema{
     public $fields = array(
         array(
             'Name' => '__SEO_Title',
-            'Description' => 'Title',
+            'Description' => 'Заголовок',
             'Type' => '0',
         ),
         array(
             'Name' => '__SEO_Description',
-            'Description' => 'Description',
+            'Description' => 'Описание',
             'Type' => '0',
         ),
         array(
             'Name' => '__SEO_Image',
-            'Description' => 'Image',
-            'Type' => '0',
+            'Description' => 'Картинка',
+            'Type' => '1',
         ),
         array(
             'Name' => '__SEO_Url',
@@ -45,12 +45,12 @@ class Main extends Schema{
         ),
         array(
             'Name' => '__SEO_SiteName',
-            'Description' => 'SiteName',
+            'Description' => 'Имя сайта',
             'Type' => '0',
         ),
         array(
             'Name' => '__SEO_Creator',
-            'Description' => 'Creator',
+            'Description' => 'Автор',
             'Type' => '0',
         ),
     );

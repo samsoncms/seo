@@ -71,8 +71,11 @@ class Migrate
                     $mainStructure->id
                 );
 
+                // Get right fields
+                $mainFields = $this->removeNotUsedFields($main->fields, $schema);
+
                 // Assign main fields to structure
-                $this->buildFieldsToStructure($main->fields, $structure->id, $schema->id);
+                $this->buildFieldsToStructure($mainFields, $structure->id, $schema->id);
 
                 // Assign fields to structure
                 $this->buildFieldsToStructure($schema->fields, $structure->id, $schema->id);
@@ -88,6 +91,25 @@ class Migrate
         }
     }
 
+    /**
+     * Remove fields which not use in relation
+     * @param $fields
+     * @param $schema
+     * @return array
+     */
+    public function removeNotUsedFields($fields, $schema)
+    {
+        $rightFields = array();
+        foreach ($fields as $field) {
+
+            // If such field found in relation array then save it
+            if (in_array($field['Name'], array_flip($schema->relations))) {
+                $rightFields[] = $field;
+            }
+        }
+
+        return $rightFields;
+    }
 
     /**
      * Get nested material in structure
