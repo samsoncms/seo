@@ -6,7 +6,7 @@
  * Time: 15:00
  */
 
-namespace samson\cms\seo\tab;
+namespace samsoncms\seo\tab;
 
 use samson\core\SamsonLocale;
 use samsonframework\core\RenderInterface;

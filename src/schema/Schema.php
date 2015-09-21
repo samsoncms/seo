@@ -6,7 +6,7 @@
  * Time: 16:41
  */
 
-namespace samson\cms\seo\schema;
+namespace samsoncms\seo\schema;
 
 /**
  * Class Schema

@@ -6,10 +6,10 @@
  * Time: 14:39
  */
 
-namespace samson\cms\seo\tab;
+namespace samsoncms\seo\tab;
 
 use samson\activerecord\dbRelation;
-use samson\cms\seo\schema\Schema;
+use samsoncms\seo\schema\Schema;
 use samson\core\SamsonLocale;
 use samsonframework\core\RenderInterface;
 use samsonframework\orm\QueryInterface;
