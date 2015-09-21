@@ -1,14 +1,14 @@
 {
-	"name":"samsoncms/seo_tags",
-	"author":"Molodyko Ruslan <molodyko@samsonos.com>",
-	"version":"0.0.1"
-	,"require":{"samsonos/php_activerecord":"*"},
-    "require-dev": {
-        "phpunit/phpunit": "4.0.*"
-    },
-	"license":"Open Software License (OSL) v 3.0",
-	"homepage":"http://samsonos.com/",
-    "autoload": {
-        "classmap": ["src/"]
-    }
+  "name": "samsoncms/seo_tags",
+  "author": "Molodyko Ruslan <molodyko@samsonos.com>",
+  "version": "0.0.1",
+  "require-dev": {
+    "phpunit/phpunit": "4.0.*",
+    "samsonos/cms_api": "*"
+  },
+  "license": "Open Software License (OSL) v 3.0",
+  "homepage": "http://samsonos.com/",
+  "autoload": {
+    "classmap": ["src/"]
+  }
 }
