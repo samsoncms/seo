@@ -19,6 +19,9 @@
   "require": {
     "samsonos/cms_api": "*"
   },
+  "replace": {
+    "samsoncms/seo_tags":"*"
+  },
   "minimum-stability": "dev",
   "license": "Open Software License (OSL) v 3.0",
   "homepage": "http://samsonos.com/",
