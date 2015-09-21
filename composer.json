@@ -1,9 +1,7 @@
 {
   "name": "samsoncms/seo_tags",
   "author": "Molodyko Ruslan <molodyko@samsonos.com>",
-  "version": "0.0.1",
-  "require-dev": {
-    "phpunit/phpunit": "4.0.*",
+  "require": {
     "samsonos/cms_api": "*"
   },
   "license": "Open Software License (OSL) v 3.0",
