@@ -81,7 +81,6 @@ class Core extends CompressableService
      */
     public function __handler()
     {
-
         // Class for work with data
         $display = new Display($this->query);
 
