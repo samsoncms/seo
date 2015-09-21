@@ -9,65 +9,66 @@
 namespace samson\cms\seo\tab;
 
 use samson\core\SamsonLocale;
-use samsoncms\app\material\form\tab\LocaleTab;
-use samsoncms\form\field\Generic;
 use samsonframework\core\RenderInterface;
 use samsonframework\orm\QueryInterface;
 use samsonframework\orm\Record;
 use samsonframework\orm\Relation;
 
-class SeoLocaleTab extends LocaleTab{
+if (class_exists('\samsoncms\app\material\form\tab\LocaleTab')) {
 
-    public $headerIndexView = 'form/tab/header/sub';
-    public $contentView = 'form/tab/main/sub_content';
+    class SeoLocaleTab extends \samsoncms\app\material\form\tab\LocaleTab{
 
-    protected $id = 'sub_field_tab';
+        public $headerIndexView = 'form/tab/header/sub';
+        public $contentView = 'form/tab/main/sub_content';
 
-    /** @var string Tab locale */
-    protected $locale = '';
+        protected $id = 'sub_field_tab';
 
-    /** @inheritdoc */
-    public function __construct(RenderInterface $renderer, QueryInterface $query, Record $entity, $locale = SamsonLocale::DEF)
-    {
-        $this->locale = $locale;
+        /** @var string Tab locale */
+        protected $locale = '';
 
-        // Set name and id of module
-        if ($locale != '') {
-            $this->id .= '-'.$this->locale;
-            $this->name = $this->locale;
-        } else {
-            $this->name = 'all';
-        }
+        /** @inheritdoc */
+        public function __construct(RenderInterface $renderer, QueryInterface $query, Record $entity, $locale = SamsonLocale::DEF)
+        {
+            $this->locale = $locale;
 
-        // Call parent constructor to define all class fields
-        parent::__construct($renderer, $query, $entity);
-    }
-
-    /** @inheritdoc */
-    public function content()
-    {
-        // Iterate locale and save their generic and data
-        $view = '';
-        foreach ($this->additionalFields as $fieldID => $additionalField) {
-
-            // If this field is empty go further
-            if ( empty($additionalField) ) {
-                continue;
+            // Set name and id of module
+            if ($locale != '') {
+                $this->id .= '-'.$this->locale;
+                $this->name = $this->locale;
+            } else {
+                $this->name = 'all';
             }
 
-            // Render field header
-            $view .= '<div class="template-form-input-group seo-block">'.$additionalField->renderHeader($this->renderer);
-
-            // Render field content
-            $view .= $additionalField->render($this->renderer, $this->query, $this->materialFields[$fieldID]).'</div>';
+            // Call parent constructor to define all class fields
+            parent::__construct($renderer, $query, $entity);
         }
 
-        // Render tab content
-        $content = $this->renderer->view("form/tab/content/fields")->fields($view)->matId($this->entity->id)->output();
+        /** @inheritdoc */
+        public function content()
+        {
+            // Iterate locale and save their generic and data
+            $view = '';
+            foreach ($this->additionalFields as $fieldID => $additionalField) {
 
-        return $this->renderer->view($this->contentView)
-            ->content($content)
-            ->subTabID($this->id)
-            ->output();
+                // If this field is empty go further
+                if ( empty($additionalField) ) {
+                    continue;
+                }
+
+                // Render field header
+                $view .= '<div class="template-form-input-group seo-block">'.$additionalField->renderHeader($this->renderer);
+
+                // Render field content
+                $view .= $additionalField->render($this->renderer, $this->query, $this->materialFields[$fieldID]).'</div>';
+            }
+
+            // Render tab content
+            $content = $this->renderer->view("form/tab/content/fields")->fields($view)->matId($this->entity->id)->output();
+
+            return $this->renderer->view($this->contentView)
+                ->content($content)
+                ->subTabID($this->id)
+                ->output();
+        }
     }
 }
