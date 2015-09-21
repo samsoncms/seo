@@ -72,17 +72,8 @@ class Core extends CompressableService
      */
     public function renderMaterialTab(\samsoncms\app\material\form\Form &$form, $renderer, $query, $entity) {
 
-        // Check if this material has the SEO structure
-        $mainStructure = new Main();
-        if ($this->query
-            ->className('structurematerial')
-            ->cond('StructureID', $mainStructure->getStructureId())
-            ->cond('MaterialID', $entity->id)
-            ->first()
-        ) {
-            $tab = new Tab($renderer, $query, $entity);
-            $form->tabs[] = $tab;
-        }
+        $tab = new Tab($renderer, $query, $entity);
+        $form->tabs[] = $tab;
     }
 
     /**
