@@ -1,2 +1,2 @@
-# seo_tags
-Search engine optimization SamsonCMS module
+# SamsonCMS SEO application
+Search engine optimization 
