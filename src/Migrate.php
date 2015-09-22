@@ -79,14 +79,6 @@ class Migrate
 
                 // Assign fields to structure
                 $this->buildFieldsToStructure($schema->fields, $structure->id, $schema->id);
-
-                // If nested material don't exist then create and assign it
-                $material = $this->buildNestedMaterial($structure);
-
-                // If material was created then assign it to the main structure
-                if ($material) {
-                    $this->assignNestedMaterial($material, $mainStructure);
-                }
             }
         }
     }

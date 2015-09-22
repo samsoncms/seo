@@ -65,4 +65,12 @@ abstract class Schema {
             new Google()
         );
     }
+
+    /**
+     * Get main structure of seo module
+     */
+    public static function getMainSchema()
+    {
+        return new Main();
+    }
 }
