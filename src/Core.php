@@ -86,7 +86,7 @@ class Core extends CompressableService
 
         // Iterate all reserved schemas and output their data
         $html = '';
-        foreach (Schema::getSchemas() as $schema) {
+        foreach (Schema::getMaterialSchema() as $schema) {
 
             // Get current material
             $material = $display->getMaterialByUrl($display->getItemUrl());

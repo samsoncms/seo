@@ -68,7 +68,7 @@ class Display {
         if (empty($fieldValue)) {
 
             // Find value in all reserved schemas
-            foreach (Schema::getSchemas() as $schemaFind) {
+            foreach (Schema::getMaterialSchema() as $schemaFind) {
 
                 // If it is not deep search then avoid equal schema
                 if ($schema->id == $schemaFind->id && $deep == false) {
@@ -182,7 +182,7 @@ class Display {
     {
         $html = '';
         // Get all single schemas
-        foreach (Schema::getSingleSchemas() as $schema) {
+        foreach (Schema::getStructureSchema() as $schema) {
 
             // Get main material
             $material = $this->getNestedMaterial(Schema::getMainSchema()->getStructure());

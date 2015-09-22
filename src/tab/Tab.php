@@ -9,8 +9,11 @@
 namespace samsoncms\seo\tab;
 
 use samson\activerecord\dbRelation;
+use samsoncms\seo\schema\control\ControlSchema;
+use samsoncms\seo\schema\material\MaterialSchema;
 use samsoncms\seo\schema\Schema;
 use samson\core\SamsonLocale;
+use samsoncms\seo\schema\structure\StructureSchema;
 use samsonframework\core\RenderInterface;
 use samsonframework\orm\QueryInterface;
 use samsonframework\orm\Record;
@@ -31,31 +34,36 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
             $this->show = false;
 
             // Get all main schemas
-            $schemasToRender = Schema::getSchemas();
+            $schemasToRender = Schema::getAllSchemas();
 
             // If this is the main material of seo module then output single schemas
             $mainStructure = Schema::getMainSchema()->getStructure();
-            if (isset($mainStructure->MaterialID)){
-                if ($mainStructure->MaterialID == $entity->id) {
 
-                    $schemasToRender = array_merge($schemasToRender, Schema::getSingleSchemas());
+            // This material which rendered is nested material of main structure
+            $isMainMaterial = $mainStructure->MaterialID == $entity->id;
+
+            // Get structures and fill sub tabs
+            foreach ($schemasToRender as $schema) {
+
+                // If is the default schema
+                if ($schema instanceof MaterialSchema) {
+
+                    $this->renderDefaultStructure($renderer, $query, $entity, $schema);
+                }
+
+                // If is the structure schema and this material which rendered is nested material of main structure
+                if (($schema instanceof StructureSchema) and ($isMainMaterial)) {
+
+                    $this->renderDefaultStructure($renderer, $query, $entity, $schema);
+                }
+
+                // If is teh control schema and this material which rendered is nested material of main structure
+                if (($schema instanceof ControlSchema) and ($isMainMaterial)) {
+
+                    $this->renderControlStructure($renderer, $query, $entity, $schema);
                 }
             }
 
-            // Get structures
-            foreach ($schemasToRender as $structure) {
-
-                // Create child tab
-                $subTab = new SeoLocaleTab($renderer, $query, $entity, $structure->getStructureId());
-
-                // Set name of tab
-                $subTab->name = ucfirst($structure->id);
-
-                // Load fields
-                $subTab->loadAdditionalFields($entity->id, 0, $structure->getStructureId());
-
-                $this->subTabs[] = $subTab;
-            }
             $this->show = true;
 
             // Call parent constructor to define all class fields
@@ -63,6 +71,35 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
 
             // Trigger special additional field
             Event::fire('samsoncms.material.fieldtab.created', array(& $this));
+        }
+
+        /**
+         * Render control schemas
+         */
+        public function renderControlStructure($renderer, $query, $entity, $schema)
+        {
+            trace('render control schema', 1);
+        }
+
+        /**
+         * Render default tab with fields
+         * @param $renderer
+         * @param $query
+         * @param $entity
+         * @param $schema
+         */
+        public function renderDefaultStructure($renderer, $query, $entity, $schema)
+        {
+            // Create child tab
+            $subTab = new SeoLocaleTab($renderer, $query, $entity, $schema->getStructureId());
+
+            // Set name of tab
+            $subTab->name = ucfirst($schema->id);
+
+            // Load fields
+            $subTab->loadAdditionalFields($entity->id, 0, $schema->getStructureId());
+
+            $this->subTabs[] = $subTab;
         }
 
         /** @inheritdoc */

@@ -8,10 +8,8 @@
 
 namespace samsoncms\seo;
 
-use samsoncms\seo\schema\Facebook;
 use samsoncms\seo\schema\Main;
-use samsoncms\seo\schema\Publisher;
-use samsoncms\seo\schema\Twitter;
+use samsoncms\seo\schema\Schema;
 
 /**
  * Class Migrate for create structures in db
@@ -33,10 +31,10 @@ class Migrate
         $this->query = $query;
 
         // Get all structures
-        $this->structures = \samsoncms\seo\schema\Schema::getSchemas();
+        $this->structures = Schema::getMaterialSchema();
 
         // Add structures which not assign to material
-        $this->structures = array_merge($this->structures, \samsoncms\seo\schema\Schema::getSingleSchemas());
+        $this->structures = array_merge($this->structures, Schema::getStructureSchema());
     }
 
     /**
