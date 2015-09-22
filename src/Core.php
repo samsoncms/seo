@@ -10,7 +10,6 @@ use samsoncms\seo\schema\Facebook;
 use samsoncms\seo\schema\Main;
 use samsoncms\seo\schema\Schema;
 use samsoncms\seo\tab\Tab;
-use samson\cms\web\navigation\CMSNav;
 use samson\core\CompressableService;
 use samsonphp\event\Event;
 
@@ -18,7 +17,7 @@ use samsonphp\event\Event;
  * Show mata links for social networks
  * For use this module need create structure and write its id to structureId in config this module
  * Then create depend! material and field for store data in this structure
- * And use this <?php m('seo')->render('')?> for insert tags into head tag
+ * And use this <?php m('seo_tags')->render('')?> for insert tags into head tag
  * @author Molodyko Ruslan <molodyko@samsonos.com>
  * @copyright 2015 SamsonOS
  * @version 1.1
@@ -81,6 +80,7 @@ class Core extends CompressableService
      */
     public function __handler()
     {
+
         // Class for work with data
         $display = new Display($this->query);
 
@@ -105,12 +105,20 @@ class Core extends CompressableService
                     $html .= $this->view($this->viewTitle)->title($content)->output();
                 }
 
-                // Save html view
-                $html .= $this->view($schema->view)->name($alias)->content($content)->output()."\n";
+                // If content not empty render field(meta tag)
+                if (!empty($content)) {
+
+                    // Save html view
+                    $html .= $this->view($schema->view)->name($alias)->content($content)->output()."\n";
+                }
             }
         }
 
+        // Get meta i18n links
+        m('i18n')->action('meta');
+        $i18n = m('i18n')->output();
+
         // Show result
-        $this->view($this->viewIndex)->content($html);
+        $this->view($this->viewIndex)->i18n($i18n)->content($html);
     }
 }

@@ -44,8 +44,7 @@ class Display {
             }
             return null;
         }
-        throw new \Exception('The field not found');
-        //return null;
+        return null;
     }
 
     /**
@@ -65,7 +64,7 @@ class Display {
         $fieldValue = $this->getDataField($fieldNameFull, $material);
 
         // If in the current schema need value wasn't found then find in sibling schemas
-        if ($fieldValue == null) {
+        if (empty($fieldValue)) {
 
             // Find value in all reserved schemas
             foreach (Schema::getSchemas() as $schemaFind) {
@@ -80,7 +79,7 @@ class Display {
 
                 // If it is deep search i.e search in parent structures then change current material to parent
                 if ($deep == true) {
-                    $material = $this->getNestedMaterial($schemaFind->getStructure());
+                    $material = $this->getNestedMaterial(Schema::getMainSchema()->getStructure());
                 }
 
                 // Get data from material
@@ -165,6 +164,7 @@ class Display {
      */
     public function getNestedMaterial($structure)
     {
+
         // Get nested material
         $material = null;
         $material = dbQuery('\samson\cms\CMSMaterial')->cond('MaterialID', $structure->MaterialID)->first();
