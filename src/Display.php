@@ -8,6 +8,7 @@
 
 namespace samsoncms\seo;
 
+use samsoncms\seo\schema\Publisher;
 use samsoncms\seo\schema\Schema;
 
 class Display {
@@ -170,5 +171,33 @@ class Display {
         $material = dbQuery('\samson\cms\CMSMaterial')->cond('MaterialID', $structure->MaterialID)->first();
 
         return $material;
+    }
+
+    /**
+     * Get all views which not assign to any material
+     * @param $renderer
+     * @return String
+     */
+    public function getCommonViews($renderer)
+    {
+        $html = '';
+        // Get all single schemas
+        foreach (Schema::getSingleSchemas() as $schema) {
+
+            // Get main material
+            $material = $this->getNestedMaterial(Schema::getMainSchema()->getStructure());
+
+            // Get relation in schema
+            foreach($schema->relations as $fieldName => $alias) {
+
+                // Get value
+                $content = $material[$fieldName.'_'.$schema->id];
+
+                // Render
+                $html .= $renderer->view($schema->view)->name($alias)->content($content)->output()."\n";
+            }
+        }
+
+        return $html;
     }
 }

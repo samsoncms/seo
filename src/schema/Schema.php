@@ -67,6 +67,16 @@ abstract class Schema {
     }
 
     /**
+     * Get all structures of seo module
+     */
+    public static function getSingleSchemas()
+    {
+        return array(
+            new Publisher(),
+        );
+    }
+
+    /**
      * Get main structure of seo module
      */
     public static function getMainSchema()

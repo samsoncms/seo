@@ -10,6 +10,7 @@ namespace samsoncms\seo;
 
 use samsoncms\seo\schema\Facebook;
 use samsoncms\seo\schema\Main;
+use samsoncms\seo\schema\Publisher;
 use samsoncms\seo\schema\Twitter;
 
 /**
@@ -33,6 +34,9 @@ class Migrate
 
         // Get all structures
         $this->structures = \samsoncms\seo\schema\Schema::getSchemas();
+
+        // Add structures which not assign to material
+        $this->structures = array_merge($this->structures, \samsoncms\seo\schema\Schema::getSingleSchemas());
     }
 
     /**
