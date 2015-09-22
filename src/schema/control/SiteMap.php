@@ -12,4 +12,28 @@ use samsoncms\seo\schema\Schema;
 
 class SiteMap extends Schema implements ControlSchema{
 
+    /** @var string Id of schema */
+    public $id = 'sitemap';
+
+    public $view = 'www/template/publisher';
+
+    /** @var array Unique fields of schema */
+    public $fields = array(
+        array(
+            'Name' => '__SEO_Structure',
+            'Description' => 'Structure',
+            'Type' => '0',
+        ),
+    );
+
+    /** @var string Name of structure */
+    public $structureName = 'SEO_name_structure_sitemap';
+
+    /** @var string Url of structure */
+    public $structureUrl = 'SEO_name_structure_sitemap';
+
+    /** @var array Relation between name of fields and particular meta tags */
+    public $relations = array(
+        '__SEO_Structure' => 'href',
+    );
 }

@@ -46,24 +46,28 @@ class Migrate
         // At first work with main structure
         $main = new Main();
 
-        // Check if the main structure is exists then go out
-        if ($this->isStructureExists($main->structureName, $main->structureUrl)) {
-            return;
+        $mainStructure = $this->isStructureExists($main->structureName, $main->structureUrl);
 
-            // If main structure not exists then create it
-        } else {
+        // If main structure not exists then create it
+        if (!$mainStructure) {
 
             // Create main structure
             $mainStructure = $this->createStructure($main->structureName, $main->structureUrl);
+        }
 
-            // Create and bind all nested field
-            //$this->buildFieldsToStructure($main->fields, $mainStructure->id, self::MAIN_PREFIX_NAME);
+        // Create and bind all nested field
+        //$this->buildFieldsToStructure($main->fields, $mainStructure->id, self::MAIN_PREFIX_NAME);
 
-            // If nested material don't exist then create and assign it
-            $this->buildNestedMaterial($mainStructure);
+        // If nested material don't exist then create and assign it
+        $this->buildNestedMaterial($mainStructure);
 
-            // Iterate all nested structures and create each of all
-            foreach ($this->structures as $schema) {
+        // Iterate all nested structures and create each of all
+        foreach ($this->structures as $schema) {
+
+            $structure = $schema->getStructure();
+
+            // If structure in this schema is already exists then go to the next schema
+            if (!$structure) {
 
                 // Create nested structure
                 $structure = $this->createStructure(
@@ -72,16 +76,16 @@ class Migrate
                     self::NESTED_MATERIAL_TYPE_STRUCTURE,
                     $mainStructure->id
                 );
-
-                // Get right fields
-                $mainFields = $this->removeNotUsedFields($main->fields, $schema);
-
-                // Assign main fields to structure
-                $this->buildFieldsToStructure($mainFields, $structure->id, $schema->id);
-
-                // Assign fields to structure
-                $this->buildFieldsToStructure($schema->fields, $structure->id, $schema->id);
             }
+
+            // Get right fields
+            $mainFields = $this->removeNotUsedFields($main->fields, $schema);
+
+            // Assign main fields to structure
+            $this->buildFieldsToStructure($mainFields, $structure->id, $schema->id);
+
+            // Assign fields to structure
+            $this->buildFieldsToStructure($schema->fields, $structure->id, $schema->id);
         }
     }
 
@@ -132,16 +136,30 @@ class Migrate
         // Iterate and create all fields
         foreach ($fields as $field) {
 
-            // Create and add field to structure
-            $fieldInstance = $this->createField(
-                $field['Name'].'_'.$prefix,
-                $field['Description'],
-                $field['Type']
-            );
+            $fieldInstance = $this->isFieldExists($field['Name'].'_'.$prefix);
+
+            // If field not exists then create it
+            if (!$fieldInstance) {
+
+                trace('create field', 1);
+                // Create and add field to structure
+                $fieldInstance = $this->createField(
+                    $field['Name'].'_'.$prefix,
+                    $field['Description'],
+                    $field['Type']
+                );
+            }
+
 
             // If field was created
             if ($fieldInstance) {
 
+                // If field is already exists then go next
+                if ($this->isFieldAssigned($fieldInstance->FieldID, $structureId)) {
+                    continue;
+                }
+
+                trace('assigned field', 1);
                 // Add field to structure
                 $this->assignFieldToStructure($structureId, $fieldInstance->FieldID);
 
@@ -229,6 +247,32 @@ class Migrate
         return $this->query->className('\samson\cms\Navigation')
             ->cond('Name', $name)
             ->cond('Url', $url)
+            ->first();
+    }
+
+    /**
+     * Get field if exists
+     * @param $name
+     * @return mixed
+     */
+    public function isFieldExists($name)
+    {
+        return $this->query->className('field')
+            ->cond('Name', $name)
+            ->first();
+    }
+
+    /**
+     * Get field if exists
+     * @param $fieldId
+     * @param $structureId
+     * @return mixed
+     */
+    public function isFieldAssigned($fieldId, $structureId)
+    {
+        return $this->query->className('structurefield')
+            ->cond('FieldID', $fieldId)
+            ->cond('StructureID', $structureId)
             ->first();
     }
 

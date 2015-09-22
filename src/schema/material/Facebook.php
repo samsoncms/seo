@@ -16,7 +16,23 @@ class Facebook extends Schema implements MaterialSchema{
     public $id = 'facebook';
 
     /** @var array Unique fields of schema */
-    public $fields = array();
+    public $fields = array(
+        array(
+            'Name' => '__SEO_Plural_title',
+            'Description' => 'Название продукта',
+            'Type' => '0',
+        ),
+        array(
+            'Name' => '__SEO_Price_amount',
+            'Description' => 'Цена',
+            'Type' => '0',
+        ),
+        array(
+            'Name' => '__SEO_Price_currency',
+            'Description' => 'Валюта',
+            'Type' => '0',
+        ),
+    );
 
     /** @var string Name of structure */
     public $structureName = 'SEO_name_structure_facebook';
@@ -33,5 +49,8 @@ class Facebook extends Schema implements MaterialSchema{
         '__SEO_Image' => 'og:image',
         '__SEO_Url' => 'og:url',
         '__SEO_SiteName' => 'og:site_name',
+        '__SEO_Plural_title' => 'product:plural_title',
+        '__SEO_Price_amount' => 'product:price:amount',
+        '__SEO_Price_currency' => 'product:price:currency',
     );
 }
