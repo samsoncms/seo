@@ -1,1 +1,4 @@
-<?php iv('content'); ?>
+<!-- meta1 -->
+<?php iv('i18n'); ?>
+
+<?php iv('content1'); ?>

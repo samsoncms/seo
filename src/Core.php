@@ -114,6 +114,9 @@ class Core extends CompressableService
             }
         }
 
+        // Get all view of not assigned(single) material
+        $html .= $display->getCommonViews($this);
+
         // Get meta i18n links
         m('i18n')->action('meta');
         $i18n = m('i18n')->output();

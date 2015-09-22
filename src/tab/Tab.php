@@ -30,8 +30,16 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
         {
             $this->show = false;
 
+            $schemasToRender = Schema::getSchemas();
+
+            // If this is the main mateiral of seo module then output single schemas
+            if (Schema::getMainSchema()->getStructure()->MaterialID == $entity->id) {
+
+                $schemasToRender = array_merge($schemasToRender, Schema::getSingleSchemas());
+            }
+
             // Get structures
-            foreach (Schema::getSchemas() as $structure) {
+            foreach ($schemasToRender as $structure) {
 
                 // Create child tab
                 $subTab = new SeoLocaleTab($renderer, $query, $entity, $structure->getStructureId());

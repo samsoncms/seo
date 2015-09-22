@@ -1,0 +1,2 @@
+<!-- Publisher -->
+<link <?php iv('name'); ?>="<?php iv('content'); ?>" rel="publisher" />
