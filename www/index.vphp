@@ -2,3 +2,5 @@
 <?php iv('i18n'); ?>
 
 <?php iv('content'); ?>
+
+<meta property="og:type" content="og:product"/>

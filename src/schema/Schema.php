@@ -8,6 +8,16 @@
 
 namespace samsoncms\seo\schema;
 
+use samsoncms\seo\schema\control\ControlSchema;
+use samsoncms\seo\schema\material\MaterialSchema;
+use samsoncms\seo\schema\structure\Publisher;
+use samsoncms\seo\schema\control\SiteMap;
+use samsoncms\seo\schema\material\Facebook;
+use samsoncms\seo\schema\material\Google;
+use samsoncms\seo\schema\material\Meta;
+use samsoncms\seo\schema\material\Twitter;
+use samsoncms\seo\schema\structure\StructureSchema;
+
 /**
  * Class Schema
  * @package samson\cms\seo\schema
@@ -54,30 +64,77 @@ abstract class Schema {
     }
 
     /**
-     * Get all structures of seo module
+     * Get all schemas in seo module
+     * @return array
      */
-    public static function getSchemas()
+    public static function getAllSchemas()
     {
         return array(
             new Meta(),
             new Facebook(),
             new Twitter(),
-            new Google()
-        );
-    }
-
-    /**
-     * Get all structures of seo module
-     */
-    public static function getSingleSchemas()
-    {
-        return array(
+            new Google(),
             new Publisher(),
+            new SiteMap(),
         );
     }
 
     /**
-     * Get main structure of seo module
+     * Get all schemas which is structure type
+     */
+    public static function getStructureSchema()
+    {
+        $schemas = array();
+        // Get all
+        foreach (self::getAllSchemas() as $st) {
+
+            // If this schema is structure type
+            if (in_array('samsoncms\seo\schema\structure\StructureSchema', class_implements($st))) {
+                $schemas[] = $st;
+            }
+        }
+
+        return $schemas;
+    }
+
+    /**
+     * Get all schemas which is material type
+     */
+    public static function getMaterialSchema()
+    {
+        $schemas = array();
+        // Get all
+        foreach (self::getAllSchemas() as $st) {
+
+            // If this schema is material type
+            if (in_array('samsoncms\seo\schema\material\MaterialSchema', class_implements($st))) {
+                $schemas[] = $st;
+            }
+        }
+
+        return $schemas;
+    }
+
+    /**
+     * Get all schemas which is control type
+     */
+    public static function getControlSchema()
+    {
+        $schemas = array();
+        // Get all
+        foreach (self::getAllSchemas() as $st) {
+
+            // If this schema is control type
+            if (in_array('samsoncms\seo\schema\control\ControlSchema', class_implements($st))) {
+                $schemas[] = $st;
+            }
+        }
+
+        return $schemas;
+    }
+
+    /**
+     * Get main schema of seo module
      */
     public static function getMainSchema()
     {

@@ -6,10 +6,9 @@ use samson\activerecord\dbRecord;
 use samson\activerecord\structure;
 use samson\cms\CMSMaterial;
 use samsoncms\seo\Migrate;
-use samsoncms\seo\schema\Facebook;
+use samsoncms\seo\schema\material\Facebook;
 use samsoncms\seo\schema\Main;
 use samsoncms\seo\schema\Schema;
-use samsoncms\seo\tab\Tab;
 use samson\core\CompressableService;
 use samsonphp\event\Event;
 
@@ -71,7 +70,7 @@ class Core extends CompressableService
      */
     public function renderMaterialTab(\samsoncms\app\material\form\Form &$form, $renderer, $query, $entity) {
 
-        $tab = new Tab($renderer, $query, $entity);
+        $tab = new \samsoncms\seo\tab\Tab($renderer, $query, $entity);
         $form->tabs[] = $tab;
     }
 
@@ -86,7 +85,7 @@ class Core extends CompressableService
 
         // Iterate all reserved schemas and output their data
         $html = '';
-        foreach (Schema::getSchemas() as $schema) {
+        foreach (Schema::getMaterialSchema() as $schema) {
 
             // Get current material
             $material = $display->getMaterialByUrl($display->getItemUrl());
