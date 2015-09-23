@@ -8,7 +8,6 @@
 
 namespace samsoncms\seo;
 
-use samsoncms\seo\schema\Publisher;
 use samsoncms\seo\schema\Schema;
 
 class Display {

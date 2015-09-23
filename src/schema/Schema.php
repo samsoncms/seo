@@ -86,11 +86,11 @@ abstract class Schema {
     {
         $schemas = array();
         // Get all
-        foreach (self::getAllSchemas() as $schema) {
+        foreach (self::getAllSchemas() as $st) {
 
             // If this schema is structure type
-            if ($schema instanceof StructureSchema) {
-                $schemas[] = $schema;
+            if (in_array('samsoncms\seo\schema\structure\StructureSchema', class_implements($st))) {
+                $schemas[] = $st;
             }
         }
 
@@ -104,11 +104,11 @@ abstract class Schema {
     {
         $schemas = array();
         // Get all
-        foreach (self::getAllSchemas() as $schema) {
+        foreach (self::getAllSchemas() as $st) {
 
             // If this schema is material type
-            if ($schema instanceof MaterialSchema) {
-                $schemas[] = $schema;
+            if (in_array('samsoncms\seo\schema\material\MaterialSchema', class_implements($st))) {
+                $schemas[] = $st;
             }
         }
 
@@ -122,11 +122,11 @@ abstract class Schema {
     {
         $schemas = array();
         // Get all
-        foreach (self::getAllSchemas() as $schema) {
+        foreach (self::getAllSchemas() as $st) {
 
             // If this schema is control type
-            if ($schema instanceof ControlSchema) {
-                $schemas[] = $schema;
+            if (in_array('samsoncms\seo\schema\control\ControlSchema', class_implements($st))) {
+                $schemas[] = $st;
             }
         }
 

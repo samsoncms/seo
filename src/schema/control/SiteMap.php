@@ -10,7 +10,7 @@ namespace samsoncms\seo\schema\control;
 
 use samsoncms\seo\schema\Schema;
 
-class SiteMap extends Schema implements ControlSchema{
+class SiteMap extends \samsoncms\seo\schema\Schema implements ControlSchema{
 
     /** @var string Id of schema */
     public $id = 'sitemap';

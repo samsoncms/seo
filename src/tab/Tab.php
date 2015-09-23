@@ -9,9 +9,7 @@
 namespace samsoncms\seo\tab;
 
 use samson\activerecord\dbRelation;
-use samson\cms\web\materialtable\tab\MaterialTable;
 use samsoncms\seo\schema\control\ControlSchema;
-use samsoncms\seo\schema\material\MaterialSchema;
 use samsoncms\seo\schema\Schema;
 use samson\core\SamsonLocale;
 use samsoncms\seo\schema\structure\StructureSchema;
@@ -44,24 +42,24 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
             $isMainMaterial = $mainStructure->MaterialID == $entity->id;
 
             // Get structures and fill sub tabs
-            foreach ($schemasToRender as $schema) {
+            foreach ($schemasToRender as $st) {
 
                 // If is the default schema
-                if ($schema instanceof MaterialSchema) {
+                if (in_array('samsoncms\seo\schema\material\MaterialSchema', class_implements($st))) {
 
-                    $this->renderDefaultStructure($renderer, $query, $entity, $schema);
+                    $this->renderDefaultStructure($renderer, $query, $entity, $st);
                 }
 
                 // If is the structure schema and this material which rendered is nested material of main structure
-                if (($schema instanceof StructureSchema) and ($isMainMaterial)) {
+                if (in_array('samsoncms\seo\schema\structure\StructureSchema', class_implements($st)) and ($isMainMaterial)) {
 
-                    $this->renderDefaultStructure($renderer, $query, $entity, $schema);
+                    $this->renderDefaultStructure($renderer, $query, $entity, $st);
                 }
 
                 // If is teh control schema and this material which rendered is nested material of main structure
-                if (($schema instanceof ControlSchema) and ($isMainMaterial)) {
+                if (in_array('samsoncms\seo\schema\control\ControlSchema', class_implements($st)) and ($isMainMaterial)) {
 
-                    $this->renderDefaultStructure($renderer, $query, $entity, $schema);
+                    $this->renderDefaultStructure($renderer, $query, $entity, $st);
                     //$this->renderControlStructure($renderer, $query, $entity, $schema);
                 }
             }
@@ -81,16 +79,7 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
         public function renderControlStructure($renderer, $query, $entity, $schema)
         {
             trace('render control schema', 1);
-            $subTab = new ControlTab($renderer, dbQuery(''), $entity, $schema->getStructureId());
 
-            // Set name of tab
-            $subTab->name = ucfirst($schema->id);
-
-            $material = dbQuery('\samson\cms\CMSMaterial')->cond('MaterialID', $entity->id)->first();
-
-            $subTab->fillTable($material, null, $schema->getStructure(), '');
-
-            $this->subTabs[] = $subTab;
         }
 
         /**
@@ -127,6 +116,7 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
             return $this->renderer->view($this->contentView)->content($content)->output();
         }
     }
+
 } else {
     class Tab{}
 }

@@ -136,7 +136,7 @@ class Migrate
         // Iterate and create all fields
         foreach ($fields as $field) {
 
-            $fieldInstance = $this->isFieldExists($field['Name'].'_'.$prefix);
+            $fieldInstance = $this->isFieldExists($field['Name'] . '_' . $prefix);
 
             // If field not exists then create it
             if (!$fieldInstance) {
@@ -144,7 +144,7 @@ class Migrate
                 trace('create field', 1);
                 // Create and add field to structure
                 $fieldInstance = $this->createField(
-                    $field['Name'].'_'.$prefix,
+                    $field['Name'] . '_' . $prefix,
                     $field['Description'],
                     $field['Type']
                 );
@@ -327,8 +327,8 @@ class Migrate
             // Set prefix of material
             $prefix = 'Material of ';
             $material = $this->createNestedMaterial(
-                $prefix.$structure->Name,
-                $prefix.$structure->Url
+                $prefix . $structure->Name,
+                $prefix . $structure->Url
             );
 
             $this->assignNestedMaterial($material, $structure);

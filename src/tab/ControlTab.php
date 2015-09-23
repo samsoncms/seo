@@ -9,7 +9,6 @@
 namespace samsoncms\seo\tab;
 
 use samson\activerecord\materialfield;
-use samson\cms\web\materialtable\MaterialTableTable;
 use samson\core\SamsonLocale;
 use samson\pager\Pager;
 use samsonframework\core\RenderInterface;
@@ -51,7 +50,7 @@ if (class_exists('\samsoncms\app\material\form\tab\LocaleTab')) {
 
         public function fillTable($entity, $query, $structure, $locale)
         {
-            $this->table = new MaterialTableTable($entity, $query, $structure, $locale);
+            //$this->table = new \samson\cms\web\materialtable\MaterialTableTable($entity, $query, $structure, $locale);
 
             $this->table->query = dbQuery('material')
                 ->cond('MaterialID', $entity->id)
