@@ -3,126 +3,142 @@
  * Created by PhpStorm.
  * User: molodyko
  * Date: 20.09.2015
- * Time: 15:00
+ * Time: 14:39
  */
 
 namespace samsoncms\seo\tab;
 
-use samson\activerecord\materialfield;
+use samson\activerecord\dbRelation;
+use samson\cms\web\materialtable\MaterialTableTable;
+use samson\cms\web\materialtable\tab\MaterialTableLocalized;
+use samsoncms\seo\render\Element;
+use samsoncms\seo\schema\control\ControlSchema;
+use samsoncms\seo\schema\Schema;
 use samson\core\SamsonLocale;
-use samson\pager\Pager;
+use samsoncms\seo\schema\structure\StructureSchema;
 use samsonframework\core\RenderInterface;
 use samsonframework\orm\QueryInterface;
 use samsonframework\orm\Record;
-use samsonframework\orm\Relation;
+use samsonphp\event\Event;
 
-if (class_exists('\samsoncms\app\material\form\tab\LocaleTab')) {
+if (class_exists('\samsoncms\form\tab\Generic')) {
 
-    class ControlTab extends \samsoncms\app\material\form\tab\LocaleTab{
+    class ControlTab extends \samsoncms\form\tab\Generic{
 
-        public $headerIndexView = 'form/tab/header/sub';
-        public $contentView = 'form/tab/main/sub_content';
+        /** @var string Tab name or identifier */
+        protected $name = 'Site Map';
 
-        protected $id = 'sub_field_tab';
-
-        /** @var string Tab locale */
-        protected $locale = '';
-
-        protected $table;
+        protected $id = 'site_map_field_tab';
 
         /** @inheritdoc */
-        public function __construct(RenderInterface $renderer, QueryInterface $query, Record $entity, $locale = SamsonLocale::DEF)
+        public function __construct(RenderInterface $renderer, QueryInterface $query, Record $entity)
         {
-            $this->locale = $locale;
+            $this->show = false;
 
-            // Set name and id of module
-            if ($locale != '') {
-                $this->id .= '-'.$this->locale;
-                $this->name = $this->locale;
-            } else {
-                $this->name = 'all';
+            // Get all main schemas
+            $schemasToRender = Schema::getAllSchemas();
+
+            // If this is the main material of seo module then output single schemas
+            $mainStructure = Schema::getMainSchema()->getStructure();
+
+            // This material which rendered is nested material of main structure
+            $isMainMaterial = $mainStructure->MaterialID == $entity->id;
+
+            // Get structures and fill sub tabs
+            foreach ($schemasToRender as $st) {
+
+                // If is the structure schema and this material which rendered is nested material of main structure
+                if (in_array('samsoncms\seo\schema\structure\StructureSchema', class_implements($st)) and ($isMainMaterial)) {
+
+                    //$this->renderDefaultStructure($renderer, $query, $entity, $st);
+                }
+
+                // If is teh control schema and this material which rendered is nested material of main structure
+                if (in_array('samsoncms\seo\schema\control\ControlSchema', class_implements($st)) and ($isMainMaterial)) {
+
+                    //$this->renderDefaultStructure($renderer, $query, $entity, $st);
+                    $this->renderControlStructure($renderer, $query, $entity, $st);
+                }
             }
+
+            $this->show = true;
 
             // Call parent constructor to define all class fields
             parent::__construct($renderer, $query, $entity);
 
+            // Trigger special additional field
+            Event::fire('samsoncms.material.fieldtab.created', array(& $this));
         }
 
-        public function fillTable($entity, $query, $structure, $locale)
+        /**
+         * Render control schemas
+         */
+        public function renderControlStructure($renderer, $query, $entity, $schema)
         {
-            //$this->table = new \samson\cms\web\materialtable\MaterialTableTable($entity, $query, $structure, $locale);
+            trace('render control schema', 1);
 
-            $this->table->query = dbQuery('material')
-                ->cond('MaterialID', $entity->id)
-                ->order_by('priority')
-                ->join('materialfield');
+            $structure = $schema->getStructure();
 
-            $this->table->renderModule = s()->module(m('material_table'));
+            $structure = dbQuery('\samson\cms\Navigation')->cond('StructureID', $structure->id)->first();
 
-            $fields = null;
-            dbQuery('structurefield')->cond('StructureID', $structure->id)->exec($fields);
+            $subTab = new MaterialTableLocalized(m('material_table'), $query, $entity, $structure, '');
 
-            foreach ($fields as $field) {
-                dbQuery('field')->cond('FieldID', $field->FieldID)->first($field);
-                $this->table->headerFields[$field->id] = $field;
-            }
+            // Set name of tab
+            $subTab->name = ucfirst($schema->id);
+
+            $subTab->schema = $schema;
+
+            $this->subTabs[] = $subTab;
         }
+
+        /**
+         * Render default tab with fields
+         * @param $renderer
+         * @param $query
+         * @param $entity
+         * @param $schema
+         */
+        public function renderDefaultStructure($renderer, $query, $entity, $schema)
+        {
+            // Create child tab
+            $subTab = new SeoLocaleTab($renderer, $query, $entity, $schema->getStructureId());
+
+            // Set name of tab
+            $subTab->name = ucfirst($schema->id);
+
+            // Load fields
+            $subTab->loadAdditionalFields($entity->id, 0, $schema->getStructureId());
+
+            $this->subTabs[] = $subTab;
+        }
+
         /** @inheritdoc */
         public function content()
         {
-            $content = '<div>This is the button</div>';
-            return $this->renderer->view($this->contentView)
-            ->content($content.$this->table->render())
-            ->subTabID($this->id)
-            ->output();
-        }
+            // Render all sub-tabs contents
+            $content = '';
+            foreach ($this->subTabs as $subTab) {
+                if ($subTab instanceof MaterialTableLocalized) {
 
-        /** @inheritdoc * /
-        public function content()
-        {
-            // Retrieve pointer to current module for rendering
-            $renderModule = s()->module(m('material_table'));
+                    $html = $subTab->content();
+                    $module = m('material_table');
+                    $content .= $module->view('form/tab/main/content')->content($html)->output();
 
-            $fieldIds = null;
-            dbQuery('structurefield')->cond('StructureID', $this->structure->id)->fields('FieldID', $fieldIds);
+                    // Create element instance
+                    $elements = new Element();
 
-            $html = '';
-            foreach ($fieldIds as $fieldId) {
+                    // Render elements of control tab
+                    $content = $elements->renderElements($subTab->schema->elements).$content;
 
-                $field = dbQuery('field')->cond('FieldID', $fieldId)->first();
-                $materialField = dbQuery('materialfield')->cond('FieldID', $fieldId)->cond('MaterialID', $this->entity->id)->first();
-
-                if (empty($materialField)) {
-                    $materialField = new materialfield(false);
-                    $materialField->FieldID = $field->FieldID;
-                    $materialField->MaterialID = $this->entity->id;
-                    $materialField->Active = 1;
-                    $materialField->save();
+                    continue;
                 }
-
-                $input = m('samsoncms_input_application')
-                    ->createFieldByType($this->table->dbQuery, $field->Type, $materialField);
-                $tdHTML = $renderModule->view('table/tdView')->set($input, 'input')->output();
-
-                $pager = new Pager(0);
-
-                // Render field row
-                $html .= $renderModule
-                    ->view('table/row')
-                    ->set(m('samsoncms_input_text_application')->createField($this->table->dbQuery, $this->entity, 'Url'), 'materialName')
-                    ->set('materialID', $this->entity->id)
-                    ->set('priority', $this->entity->priority)
-                    ->set('parentID', $this->entity->parent_id)
-                    ->set('structureId', $this->structure->StructureID)
-                    ->set('td_view', $tdHTML)
-                    ->set($pager, 'pager')
-                    ->output();
             }
 
-            return $this->renderer->view($this->contentView)
-                ->content($html)
-                ->subTabID($this->id)
-                ->output();
-        }*/
+            // Render tab main content
+            return $this->renderer->view($this->contentView)->content($content)->output();
+        }
     }
+
+} else {
+    class ControlTab{}
 }

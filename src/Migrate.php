@@ -8,6 +8,8 @@
 
 namespace samsoncms\seo;
 
+use samson\activerecord\structurematerial;
+use samsoncms\seo\schema\control\ControlSchema;
 use samsoncms\seo\schema\Main;
 use samsoncms\seo\schema\Schema;
 
@@ -35,6 +37,9 @@ class Migrate
 
         // Add structures which not assign to material
         $this->structures = array_merge($this->structures, Schema::getStructureSchema());
+
+        // Add structures which not assign to material
+        $this->structures = array_merge($this->structures, Schema::getControlSchema());
     }
 
     /**
@@ -59,7 +64,7 @@ class Migrate
         //$this->buildFieldsToStructure($main->fields, $mainStructure->id, self::MAIN_PREFIX_NAME);
 
         // If nested material don't exist then create and assign it
-        $this->buildNestedMaterial($mainStructure);
+        $mainMaterial = $this->buildNestedMaterial($mainStructure);
 
         // Iterate all nested structures and create each of all
         foreach ($this->structures as $schema) {
@@ -86,7 +91,41 @@ class Migrate
 
             // Assign fields to structure
             $this->buildFieldsToStructure($schema->fields, $structure->id, $schema->id);
+
+            // Assign all control schemas to the main material
+            if ($schema instanceof ControlSchema){
+
+                $this->assignMaterialToStructure($mainMaterial, $structure);
+            }
         }
+    }
+
+    /**
+     * Assign structure to passed material
+     * @param $material
+     * @param $structure
+     * @return mixed|structurematerial
+     */
+    public function assignMaterialToStructure($material, $structure)
+    {
+        $sm = $this->query->className('structurematerial')
+            ->cond('MaterialID', $material->MaterialID)
+            ->cond('StructureID', $structure->StructureID)
+            ->first();
+
+        // Create new relation if its not exists
+        if (empty($sm)) {
+
+            trace('create', 1);
+
+            $sm = new structurematerial(false);
+            $sm->StructureID = $structure->StructureID;
+            $sm->MaterialID = $material->MaterialID;
+            $sm->Active = 1;
+            $sm->save();
+        }
+
+        return $sm;
     }
 
     /**
@@ -336,6 +375,6 @@ class Migrate
             return $material;
         }
 
-        return null;
+        return $material;
     }
 }

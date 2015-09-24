@@ -10,6 +10,9 @@ use samsoncms\seo\schema\material\Facebook;
 use samsoncms\seo\schema\Main;
 use samsoncms\seo\schema\Schema;
 use samson\core\CompressableService;
+use samsoncms\seo\sitemap\Execute;
+use samsoncms\seo\sitemap\SiteMap;
+use samsoncms\seo\sitemap\Xml;
 use samsonphp\event\Event;
 
 /**
@@ -72,6 +75,38 @@ class Core extends CompressableService
 
         $tab = new \samsoncms\seo\tab\Tab($renderer, $query, $entity);
         $form->tabs[] = $tab;
+
+        $tab = new \samsoncms\seo\tab\ControlTab($renderer, $query, $entity);
+        $form->tabs[] = $tab;
+
+
+        // Test sitemap functionality
+        $xml = new SiteMap();
+
+        $params = $xml->getParams();
+
+        $parse = new Xml();
+
+        elapsed('start');
+
+        foreach ($params as $param) {
+
+            $result = $parse->getSiteMapForCategory($param['__SEO_Structure'], $param['__SEO_Link']);
+
+            trace($result, 1);
+        }
+
+        elapsed('end');
+    }
+
+    /**
+     * Refresh site map structure on the site
+     */
+    public function __strefresh(){
+
+        $st = new SiteMap();
+
+        // ...
     }
 
     /**

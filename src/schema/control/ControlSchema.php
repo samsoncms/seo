@@ -14,5 +14,4 @@ namespace samsoncms\seo\schema\control;
  * @package samsoncms\seo\schema\control
  */
 interface ControlSchema {
-
 }

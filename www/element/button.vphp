@@ -1,0 +1,1 @@
+<a class="material_table_add" href="<?php iv('path'); ?>"><?php iv('text'); ?></a>
