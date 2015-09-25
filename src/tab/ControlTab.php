@@ -75,8 +75,6 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
          */
         public function renderControlStructure($renderer, $query, $entity, $schema)
         {
-            trace('render control schema', 1);
-
             $structure = $schema->getStructure();
 
             $structure = dbQuery('\samson\cms\Navigation')->cond('StructureID', $structure->id)->first();
@@ -120,17 +118,28 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
             foreach ($this->subTabs as $subTab) {
                 if ($subTab instanceof MaterialTableLocalized) {
 
-                    $html = $subTab->content();
-                    $module = m('material_table');
-                    $content .= $module->view('form/tab/main/content')->content($html)->output();
-
                     // Create element instance
                     $elements = new Element();
 
                     // Render elements of control tab
-                    $content = $elements->renderElements($subTab->schema->elements).$content;
+                    $contentNestedElement = $elements->renderNestedElements($subTab->schema->elements);
 
-                    continue;
+                    // Get content of table tab
+                    $html = $subTab->content();
+
+                    // Insert element as first child of table
+                    $html = preg_replace('/>/', '>'.$contentNestedElement, $html, 1);
+
+                    // Get all not nested element
+                    $contentNotNestedElement = $elements->renderNotNestedElements($subTab->schema->elements);
+
+                    $module = m('material_table');
+                    $content .= $module->view('form/tab/main/content')->content($html)->output();
+
+                    trace($contentNotNestedElement, 1);
+
+                    // Concatenate element to main view
+                    $content = $contentNotNestedElement.$content;
                 }
             }
 

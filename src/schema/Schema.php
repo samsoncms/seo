@@ -9,6 +9,8 @@
 namespace samsoncms\seo\schema;
 
 use samsoncms\seo\schema\control\ControlSchema;
+use samsoncms\seo\schema\control\sitemap\Dynamic;
+use samsoncms\seo\schema\control\sitemap\Statical;
 use samsoncms\seo\schema\material\MaterialSchema;
 use samsoncms\seo\schema\structure\Publisher;
 use samsoncms\seo\schema\control\SiteMap;
@@ -75,7 +77,8 @@ abstract class Schema {
             new Twitter(),
             new Google(),
             new Publisher(),
-            new SiteMap(),
+            new Dynamic(),
+            new Statical(),
         );
     }
 

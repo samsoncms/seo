@@ -32,7 +32,8 @@ class Button {
         $html = $this->renderer
             ->view($this->viewItem)
             ->set('text', $this->data['Title'])
-            ->set('Link', $this->data['Link'])
+            ->set('path', $this->data['Link'])
+            ->set('class', $this->data['Class'])
             ->output();
         return $html;
     }

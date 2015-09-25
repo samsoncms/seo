@@ -20,7 +20,7 @@ class Element {
     public $groupView = 'element/group';
 
     /** @var string Name of default group */
-    public $defaultGroup = 'default3333';
+    public $defaultGroup = 'default';
 
     /** @var  \samson\core\ExternalModule */
     public $renderer;
@@ -36,7 +36,8 @@ class Element {
      * @param $element
      * @return mixed
      */
-    public function createElement($element){
+    public function createElement($element)
+    {
 
         // Get class name of element by type of config
         $className = '\samsoncms\seo\render\\'.$element['Type'];
@@ -50,14 +51,32 @@ class Element {
     /**
      * Render all passed elements by config
      * @param $elements
+     * @param $nested
      * @return string
      */
-    public function renderElements($elements) {
+    public function renderElements($elements, $nested = false)
+    {
 
         $groups = array();
 
         // Iterate all elements and get view of them
         foreach ($elements as $element) {
+
+            // Check if this element is nested
+            $isNested = (isset($element['Nested'])&&$element['Nested'] == true);
+
+            // If not right go further
+            if ($isNested == $nested) {
+                continue;
+            }
+
+            // Check if this element is need to be hide
+            $isHide = (isset($element['Hide'])&&$element['Hide'] == true);
+
+            // If not right go further
+            if ($isHide) {
+                continue;
+            }
 
             // Find group id
             if (isset($element['group'])) {
@@ -89,11 +108,32 @@ class Element {
     }
 
     /**
+     * Render only nested elements
+     * @param $elements
+     * @return String
+     */
+    public function renderNestedElements($elements)
+    {
+        return $this->renderElements($elements, false);
+    }
+
+    /**
+     * Render not nested elements
+     * @param $elements
+     * @return String
+     */
+    public function renderNotNestedElements($elements)
+    {
+        return $this->renderElements($elements, true);
+    }
+
+    /**
      * Render group of elements
      * @param $groups
      * @return string
      */
-    public function renderGroup($groups) {
+    public function renderGroup($groups)
+    {
 
         // Iterate groups
         $html = '';

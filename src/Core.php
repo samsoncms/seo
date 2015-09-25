@@ -71,7 +71,8 @@ class Core extends CompressableService
      * @param $query
      * @param $entity
      */
-    public function renderMaterialTab(\samsoncms\app\material\form\Form &$form, $renderer, $query, $entity) {
+    public function renderMaterialTab(\samsoncms\app\material\form\Form &$form, $renderer, $query, $entity)
+    {
 
         $tab = new \samsoncms\seo\tab\Tab($renderer, $query, $entity);
         $form->tabs[] = $tab;
@@ -79,34 +80,22 @@ class Core extends CompressableService
         $tab = new \samsoncms\seo\tab\ControlTab($renderer, $query, $entity);
         $form->tabs[] = $tab;
 
-
-        // Test sitemap functionality
-        $xml = new SiteMap();
-
-        $params = $xml->getParams();
-
-        $parse = new Xml();
-
-        elapsed('start');
-
-        foreach ($params as $param) {
-
-            $result = $parse->getSiteMapForCategory($param['__SEO_Structure'], $param['__SEO_Link']);
-
-            trace($result, 1);
-        }
-
-        elapsed('end');
     }
 
     /**
      * Refresh site map structure on the site
      */
-    public function __strefresh(){
+    public function __async_strefresh()
+    {
 
+        // Call instance
         $st = new SiteMap();
 
-        // ...
+        // Do refresh
+        $response = $st->refresh();
+
+        // Get result
+        return array('status'=>true, 'time' => $response['time'], 'count' => $response['count']);
     }
 
     /**
@@ -135,7 +124,7 @@ class Core extends CompressableService
                 $content = $display->findField($schema, $fieldName, $material);
 
                 // EXCLUDE Render title of page
-                if ($schema->id == 'meta' && $fieldName == '__SEO_Title' ) {
+                if ($schema->id == 'meta' && $fieldName == '__SEO_Title') {
                     $html .= $this->view($this->viewTitle)->title($content)->output();
                 }
 
