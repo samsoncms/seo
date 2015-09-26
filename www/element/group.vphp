@@ -1,0 +1,3 @@
+<div class="group-<?php iv('group'); ?>">
+    <?php iv('content'); ?>
+</div>

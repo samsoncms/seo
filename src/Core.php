@@ -10,7 +10,10 @@ use samsoncms\seo\schema\material\Facebook;
 use samsoncms\seo\schema\Main;
 use samsoncms\seo\schema\Schema;
 use samson\core\CompressableService;
+use samsoncms\seo\sitemap\SiteMap;
+use samsoncms\seo\sitemap\Xml;
 use samsonphp\event\Event;
+use WebDriver\Exception;
 
 /**
  * Show mata links for social networks
@@ -35,7 +38,8 @@ class Core extends CompressableService
     /** @var \samson\activerecord\dbQuery */
     protected $query;
 
-    public function init( array $params = array() ){
+    public function init(array $params = array())
+    {
 
         // Save dbQuery instance
         $this->query = dbQuery('structure');
@@ -48,7 +52,8 @@ class Core extends CompressableService
      * Create structures
      * @return bool
      */
-    public function prepare() {
+    public function prepare()
+    {
 
         $this->query = dbQuery('structure');
 
@@ -68,10 +73,43 @@ class Core extends CompressableService
      * @param $query
      * @param $entity
      */
-    public function renderMaterialTab(\samsoncms\app\material\form\Form &$form, $renderer, $query, $entity) {
+    public function renderMaterialTab(\samsoncms\app\material\form\Form &$form, $renderer, $query, $entity)
+    {
 
+        $migrate = new \samsoncms\seo\Migrate($this->query);
+
+        // Execute migrations
+        $migrate->migrate();
         $tab = new \samsoncms\seo\tab\Tab($renderer, $query, $entity);
         $form->tabs[] = $tab;
+
+        $tab = new \samsoncms\seo\tab\ControlTab($renderer, $query, $entity);
+        $form->tabs[] = $tab;
+
+    }
+
+    /**
+     * Refresh site map structure on the site
+     */
+    public function __async_strefresh()
+    {
+
+        // Call instance
+        $st = new SiteMap();
+
+        try {
+
+            // Do refresh
+            $response = $st->refresh();
+
+            // If error was happen then answer error message
+        } catch (\Exception $e) {
+
+            return array('status' => false, 'error' => $e->getMessage());
+        }
+
+        // Get result
+        return array('status' => true, 'time' => $response['time'], 'count' => $response['count']);
     }
 
     /**
@@ -100,7 +138,7 @@ class Core extends CompressableService
                 $content = $display->findField($schema, $fieldName, $material);
 
                 // EXCLUDE Render title of page
-                if ($schema->id == 'meta' && $fieldName == '__SEO_Title' ) {
+                if ($schema->id == 'meta' && $fieldName == '__SEO_Title') {
                     $html .= $this->view($this->viewTitle)->title($content)->output();
                 }
 
@@ -108,7 +146,7 @@ class Core extends CompressableService
                 if (!empty($content)) {
 
                     // Save html view
-                    $html .= $this->view($schema->view)->name($alias)->content($content)->output()."\n";
+                    $html .= $this->view($schema->view)->name($alias)->content($content)->output() . "\n";
                 }
             }
         }

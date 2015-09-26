@@ -13,13 +13,17 @@ namespace samsoncms\seo\schema;
  * Store all common fields between schemas and is main structure of seo module
  * @package samson\cms\seo\schema
  */
-class Main extends Schema{
+class Main extends Schema
+{
+
+    /** @var string Url of structure */
+    const URL_STRUCTURE = '_seo_structure';
 
     /** @var string Name of structure */
     public $structureName = 'SEO';
 
     /** @var string Url of structure */
-    public $structureUrl = '_seo_structure';
+    public $structureUrl = self::URL_STRUCTURE;
 
     /** @var array Unique fields of schema */
     public $fields = array(

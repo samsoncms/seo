@@ -9,9 +9,10 @@
 namespace samsoncms\seo\schema;
 
 use samsoncms\seo\schema\control\ControlSchema;
+use samsoncms\seo\schema\control\sitemap\Dynamic;
+use samsoncms\seo\schema\control\sitemap\Statical;
 use samsoncms\seo\schema\material\MaterialSchema;
 use samsoncms\seo\schema\structure\Publisher;
-use samsoncms\seo\schema\control\SiteMap;
 use samsoncms\seo\schema\material\Facebook;
 use samsoncms\seo\schema\material\Google;
 use samsoncms\seo\schema\material\Meta;
@@ -22,7 +23,8 @@ use samsoncms\seo\schema\structure\StructureSchema;
  * Class Schema
  * @package samson\cms\seo\schema
  */
-abstract class Schema {
+abstract class Schema
+{
 
     /** @var string Name of structure */
     public $structureName;
@@ -43,6 +45,7 @@ abstract class Schema {
         if ($structure) {
             return $structure->id;
         }
+
         return null;
     }
 
@@ -60,6 +63,7 @@ abstract class Schema {
         ) {
             return $structure;
         }
+
         return null;
     }
 
@@ -75,7 +79,8 @@ abstract class Schema {
             new Twitter(),
             new Google(),
             new Publisher(),
-            new SiteMap(),
+            new Dynamic(),
+            new Statical(),
         );
     }
 

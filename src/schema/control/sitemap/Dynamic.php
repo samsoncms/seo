@@ -6,18 +6,18 @@
  * Time: 17:06
  */
 
-namespace samsoncms\seo\schema\control;
+namespace samsoncms\seo\schema\control\sitemap;
 
 use samsoncms\seo\schema\Schema;
 use samsoncms\seo\render\Element;
 use samsoncms\seo\render\Button;
 use samsonphp\event\Event;
 
-class SiteMap extends \samsoncms\seo\schema\Schema implements ControlSchema
+class Dynamic extends \samsoncms\seo\schema\Schema implements \samsoncms\seo\schema\control\ControlSchema
 {
 
     /** @var string Id of schema */
-    public $id = 'sitemap';
+    public $id = 'dynamic';
 
     public $view = 'www/template/publisher';
 
@@ -27,7 +27,8 @@ class SiteMap extends \samsoncms\seo\schema\Schema implements ControlSchema
             'Group' => 'Refresh',
             'Data' => array(
                 'Title' => 'Refresh',
-                'Link' => 'refresh'
+                'Link' => 'seo_tags/strefresh',
+                'Class' => 'material_table_add refresh-btn'
             )
         ),
         array(
@@ -42,24 +43,31 @@ class SiteMap extends \samsoncms\seo\schema\Schema implements ControlSchema
         array(
             'Name' => '__SEO_Structure',
             'Description' => 'Structure',
-            'Type' => '0',
+            'Type' => 12
         ),
         array(
             'Name' => '__SEO_Link',
             'Description' => 'Link',
-            'Type' => '0',
+            'Type' => 0,
+        ),
+        array(
+            'Name' => '__SEO_IsActive',
+            'Description' => 'IsActive',
+            'Type' => 11,
+        ),
+        array(
+            'Name' => '__SEO_IsRecursive',
+            'Description' => 'IsRecursive',
+            'Type' => 11,
         ),
     );
 
     /** @var string Name of structure */
-    public $structureName = 'SEO_name_structure_sitemap';
+    public $structureName = 'SEO_name_structure_sitemap_dynamic';
 
     /** @var string Url of structure */
-    public $structureUrl = 'SEO_name_structure_sitemap';
+    public $structureUrl = 'SEO_name_structure_sitemap_dynamic';
 
     /** @var array Relation between name of fields and particular meta tags */
-    public $relations = array(
-        '__SEO_Structure' => '',
-        '__SEO_Link' => '',
-    );
+    public $relations = array();
 }

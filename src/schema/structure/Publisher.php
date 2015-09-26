@@ -10,7 +10,8 @@ namespace samsoncms\seo\schema\structure;
 
 use samsoncms\seo\schema\Schema;
 
-class Publisher extends Schema implements StructureSchema{
+class Publisher extends Schema implements StructureSchema
+{
 
     /** @var string Id of schema */
     public $id = 'publisher';
