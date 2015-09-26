@@ -8,13 +8,12 @@
 
 namespace samsoncms\seo\schema\control\sitemap;
 
-use samsoncms\seo\schema\control\ControlSchema;
 use samsoncms\seo\schema\Schema;
 use samsoncms\seo\render\Element;
 use samsoncms\seo\render\Button;
 use samsonphp\event\Event;
 
-class Dynamic extends \samsoncms\seo\schema\Schema implements ControlSchema
+class Dynamic extends \samsoncms\seo\schema\Schema implements \samsoncms\seo\schema\control\ControlSchema
 {
 
     /** @var string Id of schema */
@@ -44,12 +43,17 @@ class Dynamic extends \samsoncms\seo\schema\Schema implements ControlSchema
         array(
             'Name' => '__SEO_Structure',
             'Description' => 'Structure',
-            'Type' => '0',
+            'Type' => 12
         ),
         array(
             'Name' => '__SEO_Link',
             'Description' => 'Link',
-            'Type' => '0',
+            'Type' => 0,
+        ),
+        array(
+            'Name' => '__SEO_IsActive',
+            'Description' => 'IsActive',
+            'Type' => 11,
         ),
     );
 
@@ -60,8 +64,5 @@ class Dynamic extends \samsoncms\seo\schema\Schema implements ControlSchema
     public $structureUrl = 'SEO_name_structure_sitemap_dynamic';
 
     /** @var array Relation between name of fields and particular meta tags */
-    public $relations = array(
-        '__SEO_Structure' => '',
-        '__SEO_Link' => '',
-    );
+    public $relations = array();
 }

@@ -10,10 +10,10 @@ use samsoncms\seo\schema\material\Facebook;
 use samsoncms\seo\schema\Main;
 use samsoncms\seo\schema\Schema;
 use samson\core\CompressableService;
-use samsoncms\seo\sitemap\Execute;
 use samsoncms\seo\sitemap\SiteMap;
 use samsoncms\seo\sitemap\Xml;
 use samsonphp\event\Event;
+use WebDriver\Exception;
 
 /**
  * Show mata links for social networks
@@ -38,7 +38,8 @@ class Core extends CompressableService
     /** @var \samson\activerecord\dbQuery */
     protected $query;
 
-    public function init( array $params = array() ){
+    public function init(array $params = array())
+    {
 
         // Save dbQuery instance
         $this->query = dbQuery('structure');
@@ -51,7 +52,8 @@ class Core extends CompressableService
      * Create structures
      * @return bool
      */
-    public function prepare() {
+    public function prepare()
+    {
 
         $this->query = dbQuery('structure');
 
@@ -73,7 +75,6 @@ class Core extends CompressableService
      */
     public function renderMaterialTab(\samsoncms\app\material\form\Form &$form, $renderer, $query, $entity)
     {
-
         $tab = new \samsoncms\seo\tab\Tab($renderer, $query, $entity);
         $form->tabs[] = $tab;
 
@@ -91,11 +92,19 @@ class Core extends CompressableService
         // Call instance
         $st = new SiteMap();
 
-        // Do refresh
-        $response = $st->refresh();
+        try {
+
+            // Do refresh
+            $response = $st->refresh();
+
+            // If error was happen then answer error message
+        } catch (\Exception $e) {
+
+            return array('status' => false, 'error' => $e->getMessage());
+        }
 
         // Get result
-        return array('status'=>true, 'time' => $response['time'], 'count' => $response['count']);
+        return array('status' => true, 'time' => $response['time'], 'count' => $response['count']);
     }
 
     /**
@@ -132,7 +141,7 @@ class Core extends CompressableService
                 if (!empty($content)) {
 
                     // Save html view
-                    $html .= $this->view($schema->view)->name($alias)->content($content)->output()."\n";
+                    $html .= $this->view($schema->view)->name($alias)->content($content)->output() . "\n";
                 }
             }
         }

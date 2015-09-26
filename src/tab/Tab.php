@@ -21,7 +21,8 @@ use samsonphp\event\Event;
 
 if (class_exists('\samsoncms\form\tab\Generic')) {
 
-    class Tab extends \samsoncms\form\tab\Generic{
+    class Tab extends \samsoncms\form\tab\Generic
+    {
 
         /** @var string Tab name or identifier */
         protected $name = 'SEO';
@@ -52,7 +53,11 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
                 }
 
                 // If is the structure schema and this material which rendered is nested material of main structure
-                if (in_array('samsoncms\seo\schema\structure\StructureSchema', class_implements($st)) and ($isMainMaterial)) {
+                if (in_array(
+                    'samsoncms\seo\schema\structure\StructureSchema',
+                    class_implements($st)
+                ) and ($isMainMaterial)
+                ) {
 
                     $this->renderDefaultStructure($renderer, $query, $entity, $st);
                 }
@@ -103,5 +108,7 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
     }
 
 } else {
-    class Tab{}
+    class Tab
+    {
+    }
 }

@@ -13,12 +13,14 @@ use samsoncms\seo\schema\control\ControlSchema;
 use samsoncms\seo\schema\control\sitemap\Dynamic;
 use samsoncms\seo\schema\control\sitemap\Statical;
 use samsoncms\seo\schema\Main;
+use samsonframework\orm\Relation;
 
 /**
  * Class SiteMap
  * @package samsoncms\seo\sitemap
  */
-class SiteMap {
+class SiteMap
+{
 
     public $query;
 
@@ -69,11 +71,14 @@ class SiteMap {
             } elseif ($schema instanceof Statical) {
 
                 // Execute some structure
-                $count += $this->executeStaticalParams($params, $xml);
+                $countStaticLinks = $this->executeStaticalParams($params, $xml);
+                $count += $countStaticLinks;
 
-                $isStaticExists = true;
+                // Set true if there some links
+                if ($countStaticLinks > 0) {
+                    $isStaticExists = true;
+                }
             }
-
         }
 
         // If static elements exists then add static file to the main site map file
@@ -83,13 +88,18 @@ class SiteMap {
             $mainParams[] = array('__SEO_Link' => '/static');
         }
 
-        // Get content of main site map file
-        $mainSiteMapContent = $xml->generateIndexSiteMap($mainParams, $this->filePrefix);
+        // If there not nothing to generate
+        if ($count > 0) {
 
-        // Save
-        $xml->saveXmlToFile($this->mainMapName.'.xml', $mainSiteMapContent);
+            // Get content of main site map file
+            $mainSiteMapContent = $xml->generateIndexSiteMap($mainParams, $this->filePrefix);
+
+            // Save
+            $xml->saveXmlToFile($this->mainMapName . '.xml', $mainSiteMapContent);
+        }
 
         $time_elapsed_secs = microtime(true) - $start;
+
         //elapsed('end');
 
         return array('time' => $time_elapsed_secs, 'count' => $count);
@@ -115,13 +125,17 @@ class SiteMap {
             $count++;
         }
 
+        // There not any static links
+        if ($count == 0) {
+            return $count;
+        }
         // Get result xml text for category
         $result = $xml->generateSiteMapForCategory($links, '');
 
         $fileName = 'static.xml';
 
         // Create site map file for current category
-        $xml->saveXmlToFile($this->filePrefix.$fileName, $result);
+        $xml->saveXmlToFile($this->filePrefix . $fileName, $result);
 
         return $count;
     }
@@ -154,10 +168,10 @@ class SiteMap {
             $fileName = preg_replace('/^\//', '', $link);
 
             // Exchange all slash to dash
-            $fileName = preg_replace('/\//', '-', $fileName).'.xml';
+            $fileName = preg_replace('/\//', '-', $fileName) . '.xml';
 
             // Create site map file for current category
-            $xml->saveXmlToFile($this->filePrefix.$fileName, $result);
+            $xml->saveXmlToFile($this->filePrefix . $fileName, $result);
         }
 
         return $count;
@@ -187,7 +201,14 @@ class SiteMap {
                 $table = $mainMaterial->getTable($controlSchema->getStructure()->id);
                 $result = array();
 
+                // Get related structures
+                $relatedStructures = $this->getRelatedStructuresInMaterial(
+                    $controlSchema,
+                    $mainMaterial
+                );
+
                 // Get data in right form
+                $rowCount = 0;
                 foreach ($table as $row) {
 
                     $param = array();
@@ -198,6 +219,17 @@ class SiteMap {
                     for ($countOfField = 0; $countOfField < count($fields); $countOfField++) {
 
                         $param[$fields[$countOfField]['Name']] = $row[$countOfField];
+                    }
+
+                    // If current schema if Dynamic the set related structures to them
+                    if ($controlSchema->id == 'dynamic') {
+
+                        $param['__SEO_Structure'] = $relatedStructures[$rowCount++];
+                    }
+
+                    // If this row not active don't save the data
+                    if (isset($param['__SEO_IsActive']) && ($param['__SEO_IsActive'] == false)) {
+                        continue;
                     }
 
                     $result[] = $param;
@@ -213,6 +245,54 @@ class SiteMap {
         } else {
             throw new \Exception('Structure not found');
         }
+    }
+
+    public function getRelatedStructuresInMaterial($controlSchema, $mainMaterial)
+    {
+
+        // Get all material in this schema
+        $materialIds = null;
+        $this->query->className('structurematerial')
+            ->cond('StructureID', $controlSchema->getStructure()->id)
+            ->cond('Active', 1)
+            ->fields('MaterialID', $materialIds);
+
+        // Get all material which is child of main material
+        $materials = null;
+        $this->query->className('material')
+            ->cond('parent_id', $mainMaterial->MaterialID)
+            ->cond('MaterialID', $materialIds)
+            ->fields('MaterialID', $materials);
+
+        $result = array();
+
+        // Get field of structure select
+        $field = $this->query->className('field')
+            ->cond('Name', '__SEO_Structure_dynamic')
+            ->first();
+
+        // Iterate materials and get them values
+        foreach ($materials as $id) {
+
+            $values = null;
+            $this->query->className('materialfield')
+                ->cond('FieldID', $field->FieldID)
+                ->cond('MaterialID', $id)
+                ->fields('Value', $values);
+
+            $val = array();
+            // Save values in array
+            foreach ($values as $value) {
+
+                if (!empty($value)) {
+
+                    $val[] = $value;
+                }
+            }
+            $result[] = $val;
+        }
+
+        return $result;
     }
 
     /**
@@ -248,7 +328,7 @@ class SiteMap {
                 $urls = null;
                 $this->query->className('material')
                     ->cond('MaterialID', $materialIds)
-                    //->cond('Published', 1)
+                    ->cond('Published', 1)
                     // Remove later
                     //->limit(5000)
                     ->fields('Url', $urls);

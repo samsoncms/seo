@@ -23,7 +23,8 @@ use samsonphp\event\Event;
 
 if (class_exists('\samsoncms\form\tab\Generic')) {
 
-    class ControlTab extends \samsoncms\form\tab\Generic{
+    class ControlTab extends \samsoncms\form\tab\Generic
+    {
 
         /** @var string Tab name or identifier */
         protected $name = 'Site Map';
@@ -44,17 +45,25 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
             // This material which rendered is nested material of main structure
             $isMainMaterial = $mainStructure->MaterialID == $entity->id;
 
+            if (!$isMainMaterial) {
+                return;
+            }
             // Get structures and fill sub tabs
             foreach ($schemasToRender as $st) {
 
                 // If is the structure schema and this material which rendered is nested material of main structure
-                if (in_array('samsoncms\seo\schema\structure\StructureSchema', class_implements($st)) and ($isMainMaterial)) {
+                if (in_array(
+                    'samsoncms\seo\schema\structure\StructureSchema',
+                    class_implements($st)
+                ) and ($isMainMaterial)
+                ) {
 
                     //$this->renderDefaultStructure($renderer, $query, $entity, $st);
                 }
 
                 // If is teh control schema and this material which rendered is nested material of main structure
-                if (in_array('samsoncms\seo\schema\control\ControlSchema', class_implements($st)) and ($isMainMaterial)) {
+                if (in_array('samsoncms\seo\schema\control\ControlSchema', class_implements($st)) and ($isMainMaterial)
+                ) {
 
                     //$this->renderDefaultStructure($renderer, $query, $entity, $st);
                     $this->renderControlStructure($renderer, $query, $entity, $st);
@@ -128,7 +137,7 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
                     $html = $subTab->content();
 
                     // Insert element as first child of table
-                    $html = preg_replace('/>/', '>'.$contentNestedElement, $html, 1);
+                    $html = preg_replace('/>/', '>' . $contentNestedElement, $html, 1);
 
                     // Get all not nested element
                     $contentNotNestedElement = $elements->renderNotNestedElements($subTab->schema->elements);
@@ -136,10 +145,8 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
                     $module = m('material_table');
                     $content .= $module->view('form/tab/main/content')->content($html)->output();
 
-                    trace($contentNotNestedElement, 1);
-
                     // Concatenate element to main view
-                    $content = $contentNotNestedElement.$content;
+                    $content = $contentNotNestedElement . $content;
                 }
             }
 
@@ -149,5 +156,7 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
     }
 
 } else {
-    class ControlTab{}
+    class ControlTab
+    {
+    }
 }

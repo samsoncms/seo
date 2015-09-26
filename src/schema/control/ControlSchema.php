@@ -13,5 +13,6 @@ namespace samsoncms\seo\schema\control;
  * Use for render control tabs on the main material
  * @package samsoncms\seo\schema\control
  */
-interface ControlSchema {
+interface ControlSchema
+{
 }

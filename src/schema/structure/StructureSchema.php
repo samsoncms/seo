@@ -13,6 +13,6 @@ namespace samsoncms\seo\schema\structure;
  * Use for schemas which will be use only in structure material i.e is option and use one value on each page(material)
  * @package samsoncms\seo\schema\structure
  */
-interface StructureSchema {
-
+interface StructureSchema
+{
 }

@@ -8,11 +8,11 @@
 
 namespace samsoncms\seo\schema\control\sitemap;
 
-use samsoncms\seo\schema\control\ControlSchema;
 use samsoncms\seo\schema\Schema;
 use samsoncms\seo\render\Element;
 use samsoncms\seo\render\Button;
 use samsonphp\event\Event;
+use samsoncms\seo\schema\control\ControlSchema;
 
 class Statical extends \samsoncms\seo\schema\Schema implements ControlSchema
 {

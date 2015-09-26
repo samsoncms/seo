@@ -10,7 +10,8 @@ namespace samsoncms\seo;
 
 use samsoncms\seo\schema\Schema;
 
-class Display {
+class Display
+{
 
     /** @var \samson\activerecord\dbQuery */
     public $query;
@@ -42,8 +43,10 @@ class Display {
                     return null;
                 }
             }
+
             return null;
         }
+
         return null;
     }
 
@@ -60,7 +63,7 @@ class Display {
     {
 
         // Set field name with prefix of schema
-        $fieldNameFull = $fieldName.'_'.$schema->id;
+        $fieldNameFull = $fieldName . '_' . $schema->id;
         $fieldValue = $this->getDataField($fieldNameFull, $material);
 
         // If in the current schema need value wasn't found then find in sibling schemas
@@ -75,7 +78,7 @@ class Display {
                 }
 
                 // Set field name with prefix of schema
-                $fieldNameFull = $fieldName.'_'.$schemaFind->id;
+                $fieldNameFull = $fieldName . '_' . $schemaFind->id;
 
                 // If it is deep search i.e search in parent structures then change current material to parent
                 if ($deep == true) {
@@ -129,7 +132,8 @@ class Display {
      * @param $url
      * @return mixed
      */
-    public function getMaterialByUrl($url){
+    public function getMaterialByUrl($url)
+    {
 
         return $this->query->className('samson\cms\CMSMaterial')->Url($url)->first();
     }
@@ -187,13 +191,13 @@ class Display {
             $material = $this->getNestedMaterial(Schema::getMainSchema()->getStructure());
 
             // Get relation in schema
-            foreach($schema->relations as $fieldName => $alias) {
+            foreach ($schema->relations as $fieldName => $alias) {
 
                 // Get value
-                $content = $material[$fieldName.'_'.$schema->id];
+                $content = $material[$fieldName . '_' . $schema->id];
 
                 // Render
-                $html .= $renderer->view($schema->view)->name($alias)->content($content)->output()."\n";
+                $html .= $renderer->view($schema->view)->name($alias)->content($content)->output() . "\n";
             }
         }
 

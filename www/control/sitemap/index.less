@@ -7,3 +7,34 @@
     display: inline-block;
   }
 }
+#site_map_field_tab{
+  #_sjsselect_search{
+    display: none;
+  }
+  ._sjsselect_delete{
+    position: absolute;
+    right: 0;
+  }
+  ._sjsselect_text{
+    margin-right: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .select-structure-wrapper+*{
+    display: none !important;
+  }
+  
+  .select-structure-wrapper{
+    margin-bottom: 0;
+    &+span{
+      display: none !important;
+    }
+  }
+  ._sjsselect{
+    &>li{
+      position: relative;
+    }
+  }
+}

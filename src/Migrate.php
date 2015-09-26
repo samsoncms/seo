@@ -93,7 +93,7 @@ class Migrate
             $this->buildFieldsToStructure($schema->fields, $structure->id, $schema->id);
 
             // Assign all control schemas to the main material
-            if ($schema instanceof ControlSchema){
+            if ($schema instanceof ControlSchema) {
 
                 $this->assignMaterialToStructure($mainMaterial, $structure);
             }
@@ -180,12 +180,14 @@ class Migrate
             // If field not exists then create it
             if (!$fieldInstance) {
 
-                trace('create field', 1);
+                trace('create field, type: ' . $field['Type'], 1);
                 // Create and add field to structure
                 $fieldInstance = $this->createField(
                     $field['Name'] . '_' . $prefix,
                     $field['Description'],
-                    $field['Type']
+                    $field['Type'],
+                    // If it is the select type then add value
+                    (($field['Type'] == 4) && (isset($field['Value'])) ? $field['Value'] : '')
                 );
             }
 
@@ -213,15 +215,17 @@ class Migrate
      * @param $name
      * @param $description
      * @param $type
+     * @param $value
      * @return \samson\activerecord\field
      */
-    public function createField($name, $description, $type)
+    public function createField($name, $description, $type, $value = '')
     {
         // Save value of field
         $field = new \samson\activerecord\field(false);
         $field->Name = $name;
         $field->Description = $description;
         $field->Type = $type;
+        $field->Value = $value;
         $field->Active = 1;
         $field->save();
 

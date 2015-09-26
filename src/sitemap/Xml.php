@@ -41,15 +41,15 @@ class Xml
      */
     public function getXmlContentByUrls($urls, $category)
     {
-        $urls = array_merge($urls, $urls);
-        $urls = array_merge($urls, $urls);
-        $urls = array_merge($urls, $urls);
-        $urls = array_merge($urls, $urls);
-        $urls = array_merge($urls, $urls);
-        $urls = array_merge($urls, $urls);
-        $urls = array_merge($urls, $urls);
+//        $urls = array_merge($urls, $urls);
+//        $urls = array_merge($urls, $urls);
+//        $urls = array_merge($urls, $urls);
+//        $urls = array_merge($urls, $urls);
+//        $urls = array_merge($urls, $urls);
+//        $urls = array_merge($urls, $urls);
+//        $urls = array_merge($urls, $urls);
 
-        trace(count($urls), 1);
+        //trace(count($urls), 1);
 
         // Get full path
         $path = $this->currentHost . $category . DIRECTORY_SEPARATOR;
