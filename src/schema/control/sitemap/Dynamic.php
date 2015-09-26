@@ -55,6 +55,11 @@ class Dynamic extends \samsoncms\seo\schema\Schema implements \samsoncms\seo\sch
             'Description' => 'IsActive',
             'Type' => 11,
         ),
+        array(
+            'Name' => '__SEO_IsRecursive',
+            'Description' => 'IsRecursive',
+            'Type' => 11,
+        ),
     );
 
     /** @var string Name of structure */

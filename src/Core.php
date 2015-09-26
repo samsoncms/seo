@@ -75,6 +75,11 @@ class Core extends CompressableService
      */
     public function renderMaterialTab(\samsoncms\app\material\form\Form &$form, $renderer, $query, $entity)
     {
+
+        $migrate = new \samsoncms\seo\Migrate($this->query);
+
+        // Execute migrations
+        $migrate->migrate();
         $tab = new \samsoncms\seo\tab\Tab($renderer, $query, $entity);
         $form->tabs[] = $tab;
 

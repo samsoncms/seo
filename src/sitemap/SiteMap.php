@@ -64,9 +64,15 @@ class SiteMap
             if ($schema instanceof Dynamic) {
 
                 // Execute some structure
-                $count += $this->executeDynamicParams($params, $xml);
+                list($countLocal, $linksLocal) = $this->executeDynamicParams(
+                    $params,
+                    $xml,
+                    false
+                );
 
-                $mainParams = array_merge($mainParams, $params);
+                $count += $countLocal;
+
+                $mainParams = array_merge($mainParams, $linksLocal);
 
             } elseif ($schema instanceof Statical) {
 
@@ -146,9 +152,10 @@ class SiteMap
      * @return int
      * @throws \Exception
      */
-    public function executeDynamicParams($params, $xml)
+    public function executeDynamicParams($params, $xml, $recursive = false)
     {
         $count = 0;
+        $links = array();
 
         // Iterate all param and create site map files
         foreach ($params as $param) {
@@ -161,20 +168,42 @@ class SiteMap
 
             $count += count($urls);
 
-            // Get result xml text for category
-            $result = $xml->generateSiteMapForCategory($urls, $link);
+            // If there is some items
+            if (count($urls) > 0) {
 
-            // Remove prefix slash
-            $fileName = preg_replace('/^\//', '', $link);
+                // Get result xml text for category
+                $result = $xml->generateSiteMapForCategory($urls, $link);
 
-            // Exchange all slash to dash
-            $fileName = preg_replace('/\//', '-', $fileName) . '.xml';
+                // Remove prefix slash
+                $fileName = preg_replace('/^\//', '', $link);
 
-            // Create site map file for current category
-            $xml->saveXmlToFile($this->filePrefix . $fileName, $result);
+                // Exchange all slash to dash
+                $fileName = preg_replace('/\//', '-', $fileName) . '.xml';
+
+                // Create site map file for current category
+                $xml->saveXmlToFile($this->filePrefix . $fileName, $result);
+
+                $links[] = $param;
+            }
+
+            // If need recursively execute structures
+            if ((isset($param['__SEO_IsRecursive']))&&($param['__SEO_IsRecursive'] == true)||$recursive) {
+
+                $structures = null;
+                $this->query->className('structure')
+                    ->cond('ParentID', $param['__SEO_Structure'])
+                    ->exec($structures);
+
+                foreach ($structures as $structure) {
+                    $param = array('__SEO_Link'=>$link.'/'.$structure->Url, '__SEO_Structure' => $structure->id);
+                    list($countLocal, $linksLocal) = $this->executeDynamicParams(array($param), $xml, true);
+                    $count += $countLocal;
+                    $links = array_merge($links, $linksLocal);
+                }
+            }
         }
 
-        return $count;
+        return array($count, $links);
     }
 
     /**

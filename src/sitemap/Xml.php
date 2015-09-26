@@ -49,16 +49,19 @@ class Xml
 //        $urls = array_merge($urls, $urls);
 //        $urls = array_merge($urls, $urls);
 
-        //trace(count($urls), 1);
+        $xml = '';
+        // Check if urls don't empty
+        if (!empty($urls)) {
 
-        // Get full path
-        $path = $this->currentHost . $category . DIRECTORY_SEPARATOR;
+            // Get full path
+            $path = $this->currentHost . $category . DIRECTORY_SEPARATOR;
 
-        // Add separator
-        $tagAsSeparator = "</loc></url><url><loc>{$path}";
+            // Add separator
+            $tagAsSeparator = "</loc></url><url><loc>{$path}";
 
-        // Implode all array elements and concatenate separator with right xml tags and concatenate first and last tags
-        $xml = '<url><loc>' . $path . implode($tagAsSeparator, $urls) . '</loc></url>';
+            // Implode all array elements and concatenate separator with right xml tags and concatenate first and last tags
+            $xml = '<url><loc>' . $path . implode($tagAsSeparator, $urls) . '</loc></url>';
+        }
 
         return $xml;
     }

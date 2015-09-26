@@ -27,7 +27,8 @@ s('.#site_map_field_tab').pageInit(function(){
         var idCurrentStructurebtnAdd = btnAdd.a('href').replace(/.*\/(\d*)$/, '$1');
 
         s('li[value="'+idCurrentStructurebtnAdd+'"]', btnAdd.parent()).hide();
-    }, 1000);
+
+    }, 100);
 
 
     // Hide span before select type element
@@ -35,4 +36,15 @@ s('.#site_map_field_tab').pageInit(function(){
         s('span', el.parent()).hide();
     });
 
+});
+
+// Set active first sub tab
+s('#site_map_field_tab').pageInit(function(block){
+    var header = s('.sub-tab-header', block);
+    if (header.length > 0) {
+        $('span', header.DOMElement).addClass('active');
+        setTimeout(function(){
+            $('span', header.DOMElement).click();
+        }, 100);
+    }
 });
