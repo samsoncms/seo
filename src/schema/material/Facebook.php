@@ -10,7 +10,8 @@ namespace samsoncms\seo\schema\material;
 
 use samsoncms\seo\schema\Schema;
 
-class Facebook extends Schema implements MaterialSchema{
+class Facebook extends Schema implements MaterialSchema
+{
 
     /** @var string Id of schema */
     public $id = 'facebook';

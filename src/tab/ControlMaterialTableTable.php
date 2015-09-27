@@ -19,8 +19,12 @@ if (class_exists('\samson\cms\web\materialtable\MaterialTableTable')) {
          * @param \samson\cms\Navigation Current table structure object
          * @param string $locale Locale string
          */
-        public function __construct(\samson\cms\CMSMaterial & $material, Pager $pager = null, $structure, $locale = 'ru')
-        {
+        public function __construct(
+            \samson\cms\CMSMaterial & $material,
+            Pager $pager = null,
+            $structure = null,
+            $locale = 'ru'
+        ) {
             $this->dbQuery = new dbQuery();
             // Retrieve pointer to current module for rendering
             $this->renderModule = &s()->module($this->renderModule);

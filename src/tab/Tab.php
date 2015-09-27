@@ -10,6 +10,7 @@ namespace samsoncms\seo\tab;
 
 use samson\activerecord\dbRelation;
 use samsoncms\seo\schema\control\ControlSchema;
+use samsoncms\seo\schema\material\MaterialSchema;
 use samsoncms\seo\schema\Schema;
 use samson\core\SamsonLocale;
 use samsoncms\seo\schema\structure\StructureSchema;
@@ -20,7 +21,8 @@ use samsonphp\event\Event;
 
 if (class_exists('\samsoncms\form\tab\Generic')) {
 
-    class Tab extends \samsoncms\form\tab\Generic{
+    class Tab extends \samsoncms\form\tab\Generic
+    {
 
         /** @var string Tab name or identifier */
         protected $name = 'SEO';
@@ -44,23 +46,20 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
             // Get structures and fill sub tabs
             foreach ($schemasToRender as $st) {
 
+                $schema = $st;
                 // If is the default schema
-                if (in_array('samsoncms\seo\schema\material\MaterialSchema', class_implements($st))) {
-
+                if (in_array('samsoncms\seo\schema\material\MaterialSchema', class_implements($schema))) {
                     $this->renderDefaultStructure($renderer, $query, $entity, $st);
                 }
 
                 // If is the structure schema and this material which rendered is nested material of main structure
-                if (in_array('samsoncms\seo\schema\structure\StructureSchema', class_implements($st)) and ($isMainMaterial)) {
+                if (in_array(
+                    'samsoncms\seo\schema\structure\StructureSchema',
+                    class_implements($st)
+                ) and ($isMainMaterial)
+                ) {
 
                     $this->renderDefaultStructure($renderer, $query, $entity, $st);
-                }
-
-                // If is teh control schema and this material which rendered is nested material of main structure
-                if (in_array('samsoncms\seo\schema\control\ControlSchema', class_implements($st)) and ($isMainMaterial)) {
-
-                    $this->renderDefaultStructure($renderer, $query, $entity, $st);
-                    //$this->renderControlStructure($renderer, $query, $entity, $schema);
                 }
             }
 
@@ -71,15 +70,6 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
 
             // Trigger special additional field
             Event::fire('samsoncms.material.fieldtab.created', array(& $this));
-        }
-
-        /**
-         * Render control schemas
-         */
-        public function renderControlStructure($renderer, $query, $entity, $schema)
-        {
-            trace('render control schema', 1);
-
         }
 
         /**
@@ -118,5 +108,7 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
     }
 
 } else {
-    class Tab{}
+    class Tab
+    {
+    }
 }

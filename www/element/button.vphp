@@ -1,0 +1,1 @@
+<a class="<?php iv('class'); ?>" href="<?php iv('path'); ?>"><?php iv('text'); ?></a>

@@ -10,7 +10,8 @@ namespace samsoncms\seo\schema\material;
 
 use samsoncms\seo\schema\Schema;
 
-class Meta extends Schema implements MaterialSchema{
+class Meta extends Schema implements MaterialSchema
+{
 
     /** @var string Id of schema */
     public $id = 'meta';
