@@ -13,7 +13,6 @@ use samson\core\CompressableService;
 use samsoncms\seo\sitemap\SiteMap;
 use samsoncms\seo\sitemap\Xml;
 use samsonphp\event\Event;
-use WebDriver\Exception;
 
 /**
  * Show mata links for social networks

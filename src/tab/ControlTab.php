@@ -9,8 +9,6 @@
 namespace samsoncms\seo\tab;
 
 use samson\activerecord\dbRelation;
-use samson\cms\web\materialtable\MaterialTableTable;
-use samson\cms\web\materialtable\tab\MaterialTableLocalized;
 use samsoncms\seo\render\Element;
 use samsoncms\seo\schema\control\ControlSchema;
 use samsoncms\seo\schema\Schema;
@@ -88,7 +86,7 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
 
             $structure = dbQuery('\samson\cms\Navigation')->cond('StructureID', $structure->id)->first();
 
-            $subTab = new MaterialTableLocalized(m('material_table'), $query, $entity, $structure, '');
+            $subTab = new \samson\cms\web\materialtable\tab\MaterialTableLocalized(m('material_table'), $query, $entity, $structure, '');
 
             // Set name of tab
             $subTab->name = ucfirst($schema->id);
