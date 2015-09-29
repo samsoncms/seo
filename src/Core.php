@@ -77,6 +77,9 @@ class Core extends CompressableService
 
         $migrate = new \samsoncms\seo\Migrate($this->query);
 
+        // Remove previous tabs because they not used in this module
+        $form->tabs = array();
+
         // Execute migrations
         $migrate->migrate();
         $tab = new \samsoncms\seo\tab\Tab($renderer, $query, $entity);
