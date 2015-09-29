@@ -6,7 +6,7 @@
  * Time: 17:06
  */
 
-namespace samsoncms\seo\schema\control\sitemap;
+namespace samsoncms\seo\schema\control\seo;
 
 use samsoncms\seo\schema\Schema;
 use samsoncms\seo\render\Element;
@@ -14,16 +14,16 @@ use samsoncms\seo\render\Button;
 use samsonphp\event\Event;
 use samsoncms\seo\schema\control\ControlSchema;
 
-class Statical extends \samsoncms\seo\schema\Schema implements ControlSchema
+class Dynamic extends \samsoncms\seo\schema\Schema implements ControlSchema
 {
 
     /** @var string Id of schema */
-    public $id = 'static';
+    public $id = 'dynamic';
 
-    public $view = 'www/template/publisher';
+    public $visibility = true;
 
     /** @var string Id seo tabs */
-    public $tabs = 'site_map_field_tab';
+    public $tabs = 'seo_field_tab';
 
     public $elements = array(
         array(
@@ -49,21 +49,18 @@ class Statical extends \samsoncms\seo\schema\Schema implements ControlSchema
     /** @var array Unique fields of schema */
     public $fields = array(
         array(
-            'Name' => '__SEO_Link',
-            'Description' => 'Link',
+            'Name' => '__SEO_Dynamic_Seo_Tag',
+            'Description' => 'Теги',
             'Type' => '0',
         ),
     );
 
     /** @var string Name of structure */
-    public $structureName = 'SEO_name_structure_sitemap_static';
+    public $structureName = 'SEO_name_structure_seo_dynamic';
 
     /** @var string Url of structure */
-    public $structureUrl = 'SEO_name_structure_sitemap_static';
+    public $structureUrl = 'SEO_name_structure_seo_dynamic';
 
     /** @var array Relation between name of fields and particular meta tags */
-    public $relations = array(
-        '__SEO_Structure' => '',
-        '__SEO_Link' => '',
-    );
+    public $relations = array();
 }

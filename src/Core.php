@@ -79,18 +79,25 @@ class Core extends CompressableService
 
         $migrate = new \samsoncms\seo\Migrate($this->query);
 
-        // Remove all previous tabs
-        $form->tabs = array();
+        // If is the main material then remove not used tabs
+        if (\samsoncms\seo\schema\Schema::getMainSchema()->getStructure()->MaterialID == $entity->id) {
 
-        // Added info tab for showing info about this module
-        $form->tabs[] = new InfoTab($this);
+            // Remove all previous tabs
+            $form->tabs = array();
+
+            // Added info tab for showing info about this module
+            $form->tabs[] = new InfoTab($this);
+        }
 
         // Execute migrations
         $migrate->migrate();
-        $tab = new \samsoncms\seo\tab\Tab($renderer, $query, $entity);
+
+        $tab = new \samsoncms\seo\tab\Tab($renderer, $query, $entity, 'seo_field_tab');
+        $tab->setName('SEO');
         $form->tabs[] = $tab;
 
-        $tab = new \samsoncms\seo\tab\ControlTab($renderer, $query, $entity);
+        $tab = new \samsoncms\seo\tab\Tab($renderer, $query, $entity, 'site_map_field_tab');
+        $tab->setName('Site Map');
         $form->tabs[] = $tab;
 
     }

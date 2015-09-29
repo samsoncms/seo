@@ -12,12 +12,11 @@ use samsoncms\seo\schema\control\ControlSchema;
 use samsoncms\seo\schema\control\sitemap\Dynamic;
 use samsoncms\seo\schema\control\sitemap\Statical;
 use samsoncms\seo\schema\material\MaterialSchema;
-use samsoncms\seo\schema\structure\Publisher;
 use samsoncms\seo\schema\material\Facebook;
 use samsoncms\seo\schema\material\Google;
 use samsoncms\seo\schema\material\Meta;
 use samsoncms\seo\schema\material\Twitter;
-use samsoncms\seo\schema\structure\StructureSchema;
+use samsoncms\seo\schema\material\Publisher;
 
 /**
  * Class Schema
@@ -25,6 +24,9 @@ use samsoncms\seo\schema\structure\StructureSchema;
  */
 abstract class Schema
 {
+
+    /** @var bool If this schema can be showed on all materials */
+    public $visibility = false;
 
     /** @var string Name of structure */
     public $structureName;
@@ -34,6 +36,8 @@ abstract class Schema
 
     /** @var string Path to view of meta tags */
     public $view = 'www/template/default';
+
+    public $tabs = array();
 
     /**
      * Get structure id of current schema
@@ -69,37 +73,39 @@ abstract class Schema
 
     /**
      * Get all schemas in seo module
+     * @param String id of tab
      * @return array
      */
-    public static function getAllSchemas()
+    public static function getAllSchemas($tab = null)
     {
-        return array(
+        $allSchemas = array(
             new Meta(),
             new Facebook(),
             new Twitter(),
             new Google(),
             new Publisher(),
-            new Dynamic(),
+            new \samsoncms\seo\schema\control\sitemap\Dynamic(),
+            new \samsoncms\seo\schema\control\seo\Dynamic(),
             new Statical(),
         );
-    }
 
-    /**
-     * Get all schemas which is structure type
-     */
-    public static function getStructureSchema()
-    {
-        $schemas = array();
-        // Get all
-        foreach (self::getAllSchemas() as $st) {
-
-            // If this schema is structure type
-            if (in_array('samsoncms\seo\schema\structure\StructureSchema', class_implements($st))) {
-                $schemas[] = $st;
+        // If passed tab name then return only right schemas
+        if ($tab !== null) {
+            $rightSchemas = array();
+            foreach ($allSchemas as $schema) {
+                if (is_array($schema->tabs)) {
+                    if (in_array($tab, $schema->tabs)) {
+                        $rightSchemas[] = $schema;
+                    }
+                } elseif ($tab == $schema->tabs) {
+                    $rightSchemas[] = $schema;
+                }
             }
+
+            $allSchemas = $rightSchemas;
         }
 
-        return $schemas;
+        return $allSchemas;
     }
 
     /**

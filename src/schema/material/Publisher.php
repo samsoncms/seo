@@ -6,12 +6,18 @@
  * Time: 12:45
  */
 
-namespace samsoncms\seo\schema;
+namespace samsoncms\seo\schema\material;
 
-class Publisher extends Schema{
+use samsoncms\seo\schema\Schema;
+
+class Publisher extends Schema implements MaterialSchema
+{
 
     /** @var string Id of schema */
     public $id = 'publisher';
+
+    /** @var string Id seo tabs */
+    public $tabs = 'seo_field_tab';
 
     public $view = 'www/template/publisher';
 

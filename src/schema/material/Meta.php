@@ -16,6 +16,9 @@ class Meta extends Schema implements MaterialSchema
     /** @var string Id of schema */
     public $id = 'meta';
 
+    /** @var string Id seo tabs */
+    public $tabs = 'seo_field_tab';
+
     /** @var array Unique fields of schema */
     public $fields = array(
         array(
@@ -24,6 +27,9 @@ class Meta extends Schema implements MaterialSchema
             'Type' => '0',
         ),
     );
+
+    /** @inherit */
+    public $visibility = true;
 
     /** @var string Name of structure */
     public $structureName = 'SEO_name_structure_meta';

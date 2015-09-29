@@ -27,6 +27,12 @@ class Google extends Schema implements MaterialSchema
 
     public $view = 'www/template/google';
 
+    /** @inherit */
+    public $visibility = true;
+
+    /** @var string Id seo tabs */
+    public $tabs = 'seo_field_tab';
+
     /** @var array Relation between name of fields and particular meta tags */
     public $relations = array(
         '__SEO_Title' => 'name',

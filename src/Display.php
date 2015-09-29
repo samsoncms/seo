@@ -8,6 +8,7 @@
 
 namespace samsoncms\seo;
 
+use samsoncms\seo\schema\material\Publisher;
 use samsoncms\seo\schema\Schema;
 
 class Display
@@ -185,7 +186,7 @@ class Display
     {
         $html = '';
         // Get all single schemas
-        foreach (Schema::getStructureSchema() as $schema) {
+        foreach (array(new Publisher()) as $schema) {
 
             // Get main material
             $material = $this->getNestedMaterial(Schema::getMainSchema()->getStructure());

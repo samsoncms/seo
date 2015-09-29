@@ -21,6 +21,9 @@ class Dynamic extends \samsoncms\seo\schema\Schema implements \samsoncms\seo\sch
 
     public $view = 'www/template/publisher';
 
+    /** @var string Id seo tabs */
+    public $tabs = 'site_map_field_tab';
+
     public $elements = array(
         array(
             'Type' => 'Button',

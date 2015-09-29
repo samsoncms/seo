@@ -36,9 +36,6 @@ class Migrate
         $this->structures = Schema::getMaterialSchema();
 
         // Add structures which not assign to material
-        $this->structures = array_merge($this->structures, Schema::getStructureSchema());
-
-        // Add structures which not assign to material
         $this->structures = array_merge($this->structures, Schema::getControlSchema());
     }
 
