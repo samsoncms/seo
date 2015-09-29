@@ -35,7 +35,8 @@ class Statical extends \samsoncms\seo\schema\Schema implements ControlSchema
             'Hide' => true,
             'Data' => array(
                 'Title' => 'Update',
-                'Link' => 'refresh'
+                'Link' => 'refresh',
+                'Class' => ''
             )
         ),
         array(

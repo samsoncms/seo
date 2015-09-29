@@ -139,6 +139,7 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
                 // Get content of table tab
                 $html = $subTab->content();
 
+                // Render elements if exists
                 $isElements = isset($subTab->schema->elements)&&(!empty($subTab->schema->elements));
                 if ($isElements) {
 
@@ -153,6 +154,7 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
 
                     // Get all not nested element
                     $contentNotNestedElement = $elements->renderNotNestedElements($subTab->schema->elements);
+
                 }
 
                 $module = m('material_table');

@@ -27,22 +27,15 @@ class Dynamic extends \samsoncms\seo\schema\Schema implements ControlSchema
 
     public $elements = array(
         array(
-            'Type' => 'Button',
-            'Group' => 'Refresh',
+            'Type' => 'Info',
+            'Group' => 'Info',
             // If this element have to be nested in table
             'Nested' => true,
             // If we need to hide element set true
-            'Hide' => true,
+            'Hide' => false,
             'Data' => array(
-                'Title' => 'Update',
-                'Link' => 'refresh'
+                'View' => 'control/seo/info'
             )
-        ),
-        array(
-            'Type' => 'AnswerBlock',
-            'Group' => 'Refresh',
-            'Hide' => true,
-            'Data' => array()
         ),
     );
 
