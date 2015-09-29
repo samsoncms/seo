@@ -28,7 +28,7 @@ class Element {
     public function __construct($renderer = null)
     {
         // Save renderer
-        $this->renderer = $renderer ? $renderer : m('seo_tags');
+        $this->renderer = $renderer ? $renderer : m('seo');
     }
 
     /**

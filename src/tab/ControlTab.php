@@ -86,7 +86,13 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
 
             $structure = dbQuery('\samson\cms\Navigation')->cond('StructureID', $structure->id)->first();
 
-            $subTab = new \samson\cms\web\materialtable\tab\MaterialTableLocalized(m('material_table'), $query, $entity, $structure, '');
+            $subTab = new \samson\cms\web\materialtable\tab\MaterialTableLocalized(
+                m('material_table'),
+                $query,
+                $entity,
+                $structure,
+                ''
+            );
 
             // Set name of tab
             $subTab->name = ucfirst($schema->id);

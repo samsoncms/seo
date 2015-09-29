@@ -25,7 +25,7 @@ use samsonphp\event\Event;
 class Core extends CompressableService
 {
     /** Module identifier */
-    public $id = 'seo_tags';
+    public $id = 'seo';
 
     /** @var string main view */
     public $viewIndex = 'www/index';
