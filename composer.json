@@ -28,8 +28,7 @@
   "autoload": {
     "classmap": ["src/"],
     "psr-4": {
-      "samsoncms\\seo\\": "src/",
-      "samsoncms\\application\\": "application/"
+      "samsoncms\\seo\\": "src/"
     }
   },
   "config":{

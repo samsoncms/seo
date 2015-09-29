@@ -123,7 +123,7 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
             // Render all sub-tabs contents
             $content = '';
             foreach ($this->subTabs as $subTab) {
-                if ($subTab instanceof MaterialTableLocalized) {
+                if ($subTab instanceof \samson\cms\web\materialtable\tab\MaterialTableLocalized) {
 
                     // Create element instance
                     $elements = new Element();

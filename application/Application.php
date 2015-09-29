@@ -9,7 +9,6 @@
 namespace samsoncms\seo\application;
 
 use samsonphp\event\Event;
-use samsoncms\seo\application\Form;
 
 class Application extends \samsoncms\Application
 {
@@ -24,8 +23,6 @@ class Application extends \samsoncms\Application
 
     /** @var string $icon Icon class */
     public $icon = 'group';
-
-    public $formClassName = '\samsoncms\seo\application\Form';
 
     /**
      * Universal controller action.

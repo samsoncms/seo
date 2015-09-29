@@ -12,13 +12,12 @@ use samsoncms\seo\schema\Schema;
 use samson\core\CompressableService;
 use samsoncms\seo\sitemap\SiteMap;
 use samsoncms\seo\sitemap\Xml;
+use samsoncms\seo\tab\InfoTab;
 use samsonphp\event\Event;
 
 /**
  * Show mata links for social networks
- * For use this module need create structure and write its id to structureId in config this module
- * Then create depend! material and field for store data in this structure
- * And use this <?php m('seo_tags')->render('')?> for insert tags into head tag
+ * For use this module need simply install it
  * @author Molodyko Ruslan <molodyko@samsonos.com>
  * @copyright 2015 SamsonOS
  * @version 1.1
@@ -45,6 +44,9 @@ class Core extends CompressableService
 
         // Fire new event after creating form tabs
         Event::subscribe('samsoncms.material.form.created', array($this, 'renderMaterialTab'));
+
+        // Subcribe for
+        Event::subscribe('core.rendered', array($this, 'templateRenderer'));
     }
 
     /**
@@ -77,8 +79,11 @@ class Core extends CompressableService
 
         $migrate = new \samsoncms\seo\Migrate($this->query);
 
-        // Remove previous tabs because they not used in this module
+        // Remove all previous tabs
         $form->tabs = array();
+
+        // Added info tab for showing info about this module
+        $form->tabs[] = new InfoTab($this);
 
         // Execute migrations
         $migrate->migrate();
@@ -117,7 +122,7 @@ class Core extends CompressableService
     /**
      * Render tags
      */
-    public function __handler()
+    public function show()
     {
 
         // Class for work with data
@@ -156,11 +161,20 @@ class Core extends CompressableService
         // Get all view of not assigned(single) material
         $html .= $display->getCommonViews($this);
 
-        // Get meta i18n links
-        m('i18n')->action('meta');
-        $i18n = m('i18n')->output();
-
         // Show result
-        $this->view($this->viewIndex)->i18n($i18n)->content($html);
+        return $this->view($this->viewIndex)->content($html)->output();
+    }
+
+    /**
+     * Handle core main template rendered event to
+     * add SEO needed localization metatags to HTML markup
+     * @param string $html Rendered HTML template from core
+     * @param array $parameters Collection of data passed to current view
+     * @param Module $module Pointer to active core module
+     */
+    public function templateRenderer(&$html, &$parameters, &$module)
+    {
+        $content = $this->show();
+        $html = str_ireplace('</head>', $content.'</head>', $html);
     }
 }
