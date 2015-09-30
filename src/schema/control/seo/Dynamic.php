@@ -20,6 +20,8 @@ class Dynamic extends \samsoncms\seo\schema\Schema implements ControlSchema
     /** @var string Id of schema */
     public $id = 'dynamic';
 
+    public $view = 'template/dynamic';
+
     public $visibility = true;
 
     /** @var string Id seo tabs */

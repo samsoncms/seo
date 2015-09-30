@@ -14,7 +14,6 @@ use samsoncms\seo\schema\control\ControlSchema;
 use samsoncms\seo\schema\material\MaterialSchema;
 use samsoncms\seo\schema\Schema;
 use samson\core\SamsonLocale;
-use samsoncms\seo\schema\structure\StructureSchema;
 use samsonframework\core\RenderInterface;
 use samsonframework\orm\QueryInterface;
 use samsonframework\orm\Record;

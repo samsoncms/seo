@@ -6,6 +6,7 @@ use samson\activerecord\dbRecord;
 use samson\activerecord\structure;
 use samson\cms\CMSMaterial;
 use samsoncms\seo\Migrate;
+use samsoncms\seo\schema\control\seo\Dynamic;
 use samsoncms\seo\schema\material\Facebook;
 use samsoncms\seo\schema\Main;
 use samsoncms\seo\schema\Schema;
@@ -135,12 +136,21 @@ class Core extends CompressableService
         // Class for work with data
         $display = new Display($this->query);
 
+        // Get main material
+        $mainMaterial = $display->getNestedMaterial(Schema::getMainSchema()->getStructure());
+
         // Iterate all reserved schemas and output their data
         $html = '';
         foreach (Schema::getMaterialSchema() as $schema) {
 
             // Get current material
             $material = $display->getMaterialByUrl($display->getItemUrl());
+
+            // Exclude publisher
+            if ($schema instanceof \samsoncms\seo\schema\material\Publisher) {
+
+                continue;
+            }
 
             // Out comment
             $html .= "<!-- {$schema->id} -->";
@@ -164,6 +174,34 @@ class Core extends CompressableService
                 }
             }
         }
+
+        // Get current material
+        $material = $display->getMaterialByUrl($display->getItemUrl());
+
+        $dynamic = new Dynamic();
+
+        $table = null;
+        if (!empty($material)) {
+
+            // Get all possible values of tags
+            $table = $material->getTable($dynamic->getStructureId());
+        }
+
+        // If there not any values then find them in main material
+        if (empty($table)) {
+
+            $table = $mainMaterial->getTable($dynamic->getStructureId());
+        }
+
+        $html .= '<!-- dynamic tags -->';
+
+        // Get full view
+        foreach ($table as $tag) {
+
+            $html .= $this->view($dynamic->view)->content(array_shift($tag))->output();
+        }
+
+
 
         // Get all view of not assigned(single) material
         $html .= $display->getCommonViews($this);

@@ -8,6 +8,7 @@
 
 namespace samsoncms\seo;
 
+use samsoncms\seo\schema\control\seo\Dynamic;
 use samsoncms\seo\schema\material\Publisher;
 use samsoncms\seo\schema\Schema;
 
@@ -185,11 +186,12 @@ class Display
     public function getCommonViews($renderer)
     {
         $html = '';
+
+        // Get main material
+        $material = $this->getNestedMaterial(Schema::getMainSchema()->getStructure());
+
         // Get all single schemas
         foreach (array(new Publisher()) as $schema) {
-
-            // Get main material
-            $material = $this->getNestedMaterial(Schema::getMainSchema()->getStructure());
 
             // Get relation in schema
             foreach ($schema->relations as $fieldName => $alias) {
