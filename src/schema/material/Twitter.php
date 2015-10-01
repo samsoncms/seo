@@ -22,6 +22,12 @@ class Twitter extends Schema implements MaterialSchema
     /** @var string Name of structure */
     public $structureName = 'SEO_name_structure_twitter';
 
+    /** @var string Id seo tabs */
+    public $tabs = 'seo_field_tab';
+
+    /** @inherit */
+    public $visibility = true;
+
     /** @var string Url of structure */
     public $structureUrl = 'SEO_url_structure_twitter';
 

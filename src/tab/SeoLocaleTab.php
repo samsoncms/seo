@@ -61,11 +61,12 @@ if (class_exists('\samsoncms\app\material\form\tab\LocaleTab')) {
                 }
 
                 // Render field header
-                $view .= '<div class="template-form-input-group seo-block">' . $additionalField->renderHeader($this->renderer);
+                $view .= '<div class="template-form-input-group seo-block">'
+                     . $additionalField->renderHeader($this->renderer);
 
                 // Render field content
-                $view .= $additionalField->render($this->renderer, $this->query,
-                        $this->materialFields[$fieldID]) . '</div>';
+                $view .= $additionalField->render($this->renderer, $this->query, $this->materialFields[$fieldID])
+                    . '</div>';
             }
 
             // Render tab content
