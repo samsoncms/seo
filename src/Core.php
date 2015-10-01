@@ -4,8 +4,10 @@ namespace samsoncms\seo;
 
 use samson\activerecord\dbRecord;
 use samson\activerecord\structure;
+use samson\activerecord\structurematerial;
 use samson\cms\CMSMaterial;
 use samsoncms\seo\Migrate;
+use samsoncms\seo\render\Element;
 use samsoncms\seo\schema\control\seo\Dynamic;
 use samsoncms\seo\schema\material\Facebook;
 use samsoncms\seo\schema\Main;
@@ -46,8 +48,84 @@ class Core extends CompressableService
         // Fire new event after creating form tabs
         Event::subscribe('samsoncms.material.form.created', array($this, 'renderMaterialTab'));
 
-        // Subcribe for
+        // Subscribe for render index file and include seo tags to it
         Event::subscribe('core.rendered', array($this, 'templateRenderer'));
+
+        // Subscribe for
+        Event::subscribe('samson.cms.web.materialtable.add', array($this, 'addDynamicTags'));
+
+        // Subscribe for
+        Event::subscribe('samson.cms.web.materialtable.get.table', array($this, 'renderContentElement'));
+    }
+
+    /**
+     * Render elements on the tabs if exists
+     * @param $materialId
+     * @param $structureId
+     * @param $content
+     */
+    public function renderContentElement($materialId, $structureId, & $content)
+    {
+        // Iterate all control schemas and get some element
+        foreach (Schema::getControlSchema() as $schema) {
+
+            if ($schema->getStructureId() == $structureId) {
+
+                // Render elements if exists
+                $isElements = isset($schema->elements)&&(!empty($schema->elements));
+
+                // If exists elements on the tab then show their
+                if ($isElements) {
+
+                    // Create element instance
+                    $elements = new Element();
+
+                    // Render elements of control tab
+                    $contentNestedElement = $elements->renderNestedElements($schema->elements);
+
+                    // Insert element as first child of table
+                    $content = preg_replace(
+                        '/\<div class=\"material_table_tab\"\>/',
+                        '<div class="material_table_tab">' . $contentNestedElement,
+                        $content,
+                        1
+                    );
+
+                    // Get all not nested element
+                    //$contentNotNestedElement = $elements->renderNotNestedElements($schema->elements);
+                }
+
+            }
+        }
+    }
+
+    /**
+     * Add dynamic tags into specific material
+     * @param $materialId
+     * @param $structureId
+     */
+    public function addDynamicTags($materialId, $structureId)
+    {
+        $dynamicSchema = new Dynamic();
+        if ($structureId == $dynamicSchema->getStructureId()) {
+
+            // If binding material and structure don't exists then create it
+            if (
+            $this->query->className('structurematerial')
+                ->cond('StructureID', $structureId)
+                ->cond('MaterialID', $materialId)
+                ->count() == 0
+            ) {
+                // Create relations
+                $sm = new structurematerial(false);
+                $sm->StructureID = $structureId;
+                $sm->MaterialID = $materialId;
+                $sm->save();
+
+                // Add row
+                m('material_table')->__async_add($materialId, $structureId);
+            }
+        }
     }
 
     /**
