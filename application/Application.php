@@ -10,44 +10,47 @@ namespace samsoncms\seo\application;
 
 use samsonphp\event\Event;
 
-class Application extends \samsoncms\Application
-{
-    /** Application name */
-    public $name = 'SEO';
+if (class_exists('\samsoncms\Application')) {
 
-    /** Application description */
-    public $description = 'Seo module';
-
-    /** Identifier */
-    protected $id = 'seo_app';
-
-    /** @var string $icon Icon class */
-    public $icon = 'group';
-
-    /**
-     * Universal controller action.
-     * Entity collection rendering
-     */
-    public function __handler()
+    class Application extends \samsoncms\Application
     {
-        // Find id main material of main structure
-        $structureID = \samsoncms\seo\schema\Schema::getMainSchema()->getStructureId();
-        $material = null;
-        if (
+        /** Application name */
+        public $name = 'SEO';
+
+        /** Application description */
+        public $description = 'Seo module';
+
+        /** Identifier */
+        protected $id = 'seo_app';
+
+        /** @var string $icon Icon class */
+        public $icon = 'group';
+
+        /**
+         * Universal controller action.
+         * Entity collection rendering
+         */
+        public function __handler()
+        {
+            // Find id main material of main structure
+            $structureID = \samsoncms\seo\schema\Schema::getMainSchema()->getStructureId();
+            $material = null;
+            if (
             $this->query->className('structure')
                 ->cond('StructureID', $structureID)
                 ->first($material)
-        ) {
+            ) {
 
-            // Get id
-            $materialID = $material->MaterialID;
+                // Get id
+                $materialID = $material->MaterialID;
 
-            // Redirect to seo module
-            url()->redirect("/material/form/$materialID#seo_field_tab");
+                // Redirect to seo module
+                url()->redirect("/material/form/$materialID#seo_field_tab");
 
-        } else {
-            //throw new \Exception('Main material of seo module not found');
-            trace('Main material of seo module not found', 1);
+            } else {
+                //throw new \Exception('Main material of seo module not found');
+                trace('Main material of seo module not found', 1);
+            }
         }
     }
 }
