@@ -120,7 +120,7 @@ class Display
         if (empty($value)) {
 
             // Get parent material
-            $material = $this->getNestedMaterial($schema->getStructure());
+            $material = $this->getNestedMaterial(Schema::getMainSchema()->getStructure());
 
             // Get value
             $value = $this->getFieldBySchema($schema, $fieldName, $material, true);

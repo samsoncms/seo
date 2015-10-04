@@ -30,7 +30,7 @@ class Dynamic extends \samsoncms\seo\schema\Schema implements \samsoncms\seo\sch
             'Group' => 'Refresh',
             'Data' => array(
                 'Title' => 'Refresh',
-                'Link' => 'seo_tags/strefresh',
+                'Link' => 'seo/strefresh',
                 'Class' => 'material_table_add refresh-btn'
             )
         ),
