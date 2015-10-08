@@ -3,7 +3,7 @@
  */
 
 // Click manual on the first tab of seo tab
-s('#seo_field_tab').pageInit(function(block){
+SamsonCMS_InputSEO_TAB = function(block){
     var header = s('.sub-tab-header', block);
     if (header.length > 0) {
         $('span', header.DOMElement).addClass('active');
@@ -11,4 +11,7 @@ s('#seo_field_tab').pageInit(function(block){
             $('span', header.DOMElement).click();
         }, 100);
     }
-});
+};
+
+// Bind input
+SamsonCMS_Input.bind(SamsonCMS_InputSEO_TAB, '#seo_field_tab');
