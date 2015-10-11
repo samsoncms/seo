@@ -124,6 +124,13 @@ class Display
 
             // Get value
             $value = $this->getFieldBySchema($schema, $fieldName, $material, true);
+
+            // If site name in the facebook not found then set it as absolute url this page
+            if (($value == '') && ($schema instanceof Facebook)) {
+                if ($fieldName == '__SEO_Url') {
+                    $value = 'http://'.$_SERVER['HTTP_HOST'].'/'.url()->text();
+                }
+            }
         }
 
         return $value;
