@@ -9,6 +9,7 @@
 namespace samsoncms\seo\tab;
 
 use samson\core\SamsonLocale;
+use samsoncms\seo\render\Element;
 use samsonframework\core\RenderInterface;
 use samsonframework\orm\QueryInterface;
 use samsonframework\orm\Record;
@@ -32,10 +33,12 @@ if (class_exists('\samsoncms\app\material\form\tab\LocaleTab')) {
             RenderInterface $renderer,
             QueryInterface $query,
             Record $entity,
-            $locale = SamsonLocale::DEF
+            $locale = SamsonLocale::DEF,
+            $schema = null
         ) {
             $this->locale = $locale;
 
+            $this->schema = $schema;
             // Set name and id of module
             if ($locale != '') {
                 $this->id .= '-' . $this->locale;
@@ -53,20 +56,58 @@ if (class_exists('\samsoncms\app\material\form\tab\LocaleTab')) {
         {
             // Iterate locale and save their generic and data
             $view = '';
+
+//            // Render elements if exists
+//            $isElements = isset($this->schema->elements)&&(!empty($this->schema->elements));
+//            if ($isElements) {
+//
+//                // Create element instance
+//                $elements = new Element();
+//
+//                // Render elements of control tab
+//                $contentNestedElement = $elements->renderNotNestedElements($this->schema->elements);
+//
+//                $view = $contentNestedElement;
+//            }
+
             foreach ($this->additionalFields as $fieldID => $additionalField) {
 
+                $content = '';
                 // If this field is empty go further
                 if (empty($additionalField)) {
                     continue;
                 }
 
+
+                // Render elements if exists
+                $isElements = isset($this->schema->elements)&&(!empty($this->schema->elements));
+                if ($isElements) {
+
+                    // Create element instance
+                    $elements = new Element();
+
+                    foreach ($this->schema->elements as $element) {
+
+                        if (isset($element['Field']) && ($element['Field'] == $additionalField->name)) {
+
+                            // Render elements of control tab
+                            $contentNestedElement = $elements->renderNestedElements(array($element), true);
+
+                            // Insert element as first child of table
+                            $content .= $contentNestedElement;
+                        }
+                    }
+                }
+
                 // Render field header
-                $view .= '<div class="template-form-input-group seo-block">'
-                     . $additionalField->renderHeader($this->renderer);
+                $content .= '<div class="template-form-input-group seo-block">'
+                    . $additionalField->renderHeader($this->renderer);
 
                 // Render field content
-                $view .= $additionalField->render($this->renderer, $this->query, $this->materialFields[$fieldID])
+                $content .= $additionalField->render($this->renderer, $this->query, $this->materialFields[$fieldID])
                     . '</div>';
+
+                $view .= $content;
             }
 
             // Render tab content

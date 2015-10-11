@@ -18,6 +18,21 @@ class Facebook extends Schema implements MaterialSchema
 
     public $tabs = 'seo_field_tab';
 
+    public $elements = array(
+        array(
+            'Type' => 'Info',
+            'Group' => 'InfoFacebook',
+            // If we need to hide element set true
+            'Hide' => false,
+            'Nested' => true,
+            // Assign element to some field
+            'Field' => '__SEO_Url_facebook',
+            'Data' => array(
+                'View' => 'control/seo/url_info'
+            )
+        ),
+    );
+
     /** @var array Unique fields of schema */
     public $fields = array(
         array(

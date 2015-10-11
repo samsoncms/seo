@@ -54,7 +54,7 @@ class Element {
      * @param $nested
      * @return string
      */
-    public function renderElements($elements, $nested = false)
+    public function renderElements($elements, $nested = false, $field = null)
     {
 
         $groups = array();
@@ -65,10 +65,16 @@ class Element {
             // Check if this element is nested
             $isNested = (isset($element['Nested'])&&$element['Nested'] == true);
 
-            // If not right go further
-            if ($isNested == $nested) {
+            if (isset($element['Field']) && ($field == false)) {
                 continue;
+            } else {
+
+                // If not right go further
+                if ($isNested == $nested) {
+                    continue;
+                }
             }
+
 
             // Check if this element is need to be hide
             $isHide = (isset($element['Hide'])&&$element['Hide'] == true);
@@ -112,9 +118,9 @@ class Element {
      * @param $elements
      * @return String
      */
-    public function renderNestedElements($elements)
+    public function renderNestedElements($elements, $field = null)
     {
-        return $this->renderElements($elements, false);
+        return $this->renderElements($elements, false, $field);
     }
 
     /**
@@ -122,9 +128,9 @@ class Element {
      * @param $elements
      * @return String
      */
-    public function renderNotNestedElements($elements)
+    public function renderNotNestedElements($elements, $field = null)
     {
-        return $this->renderElements($elements, true);
+        return $this->renderElements($elements, true, $field);
     }
 
     /**

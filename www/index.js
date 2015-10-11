@@ -13,5 +13,9 @@ SamsonCMS_InputSEO_TAB = function(block){
     }
 };
 
-// Bind input
-SamsonCMS_Input.bind(SamsonCMS_InputSEO_TAB, '#seo_field_tab');
+if (SamsonCMS_Input != null) {
+
+    // Bind input
+    SamsonCMS_Input.bind(SamsonCMS_InputSEO_TAB, '#seo_field_tab');
+
+}

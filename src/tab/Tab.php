@@ -92,7 +92,7 @@ if (class_exists('\samsoncms\form\tab\Generic')) {
         public function renderDefaultStructure($renderer, $query, $entity, $schema)
         {
             // Create child tab
-            $subTab = new SeoLocaleTab($renderer, $query, $entity, $schema->getStructureId());
+            $subTab = new SeoLocaleTab($renderer, $query, $entity, $schema->getStructureId(), $schema);
 
             // Set name of tab
             $subTab->name = ucfirst($schema->id);
