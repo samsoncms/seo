@@ -10,7 +10,7 @@ namespace samsoncms\seo\application;
 
 use samsonphp\event\Event;
 
-if (class_exists('\samsoncms\Application')) {
+if (class_exists('\samsoncms\Application', false)) {
 
     class Application extends \samsoncms\Application
     {
