@@ -295,9 +295,8 @@ class Core extends CompressableService
      * @param array $parameters Collection of data passed to current view
      * @param Module $module Pointer to active core module
      */
-    public function templateRenderer(&$html, &$parameters, $module)
+    public function templateRenderer(&$html, $parameters, $module)
     {
-
         $content = $this->show();
         $html = str_ireplace('</head>', $content.'</head>', $html);
     }

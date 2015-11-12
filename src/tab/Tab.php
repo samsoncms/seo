@@ -19,7 +19,7 @@ use samsonframework\orm\QueryInterface;
 use samsonframework\orm\Record;
 use samsonphp\event\Event;
 
-if (class_exists('\samsoncms\form\tab\Generic')) {
+if (class_exists('\samsoncms\form\tab\Generic', false)) {
 
     class Tab extends \samsoncms\form\tab\Generic
     {

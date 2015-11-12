@@ -15,7 +15,7 @@ use samsonframework\orm\QueryInterface;
 use samsonframework\orm\Record;
 use samsonframework\orm\Relation;
 
-if (class_exists('\samsoncms\app\material\form\tab\LocaleTab')) {
+if (class_exists('\samsoncms\app\material\form\tab\LocaleTab', false)) {
 
     class SeoLocaleTab extends \samsoncms\app\material\form\tab\LocaleTab
     {
