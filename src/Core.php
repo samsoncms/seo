@@ -236,8 +236,10 @@ class Core extends CompressableService
             // Iterate all relations
             foreach ($schema->relations as $fieldName => $alias) {
 
+//                trace($fieldName,1);
+
                 // Find data in hierarchy of structures
-                $content = $display->findField($schema, $fieldName, $material);
+                $content = trim($display->findField($schema, $fieldName, $material));
 
                 // EXCLUDE Render title of page
                 if ($schema->id == 'meta' && $fieldName == '__SEO_Title') {
@@ -245,8 +247,7 @@ class Core extends CompressableService
                 }
 
                 // If content not empty render field(meta tag)
-                if (!empty($content)) {
-
+                if (isset($content{0})) {
                     // Save html view
                     $html .= $this->view($schema->view)->name($alias)->content($content)->output() . "\n";
                 }
@@ -284,6 +285,7 @@ class Core extends CompressableService
         // Get all view of not assigned(single) material
         $html .= $display->getCommonViews($this);
 
+        //trace($html,1);
         // Show result
         return $this->view($this->viewIndex)->content($html)->output();
     }
@@ -297,7 +299,10 @@ class Core extends CompressableService
      */
     public function templateRenderer(&$html, $parameters, $module)
     {
-        $content = $this->show();
-        $html = str_ireplace('</head>', $content.'</head>', $html);
+        // TODO: Change this to normal dependency
+        if($module->id() != 'compressor') {
+            $content = $this->show();
+            $html = str_ireplace('</head>', $content . '</head>', $html);
+        }
     }
 }
