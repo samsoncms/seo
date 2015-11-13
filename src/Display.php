@@ -204,10 +204,12 @@ class Display
             foreach ($schema->relations as $fieldName => $alias) {
 
                 // Get value
-                $content = $material[$fieldName . '_' . $schema->id];
+                $content = trim($material[$fieldName . '_' . $schema->id]);
 
-                // Render
-                $html .= $renderer->view($schema->view)->name($alias)->content($content)->output() . "\n";
+                if (isset($content{0})) {
+                    // Render
+                    $html .= $renderer->view($schema->view)->name($alias)->content($content)->output() . "\n";
+                }
             }
         }
 
