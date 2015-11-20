@@ -1,5 +1,8 @@
 # SamsonCMS SEO application
-Search engine optimization 
+Search engine optimization
+
+For adding module link use this in index.php of cms:
+> s()->load('../vendor/samsoncms/seo/application');
 
 [![Latest Stable Version](https://poser.pugx.org/samsoncms/seo/v/stable.svg)](https://packagist.org/packages/samsoncms/seo)
 [![Build Status](https://scrutinizer-ci.com/g/samsoncms/seo/badges/build.png?b=master)](https://scrutinizer-ci.com/g/samsoncms/seo/build-status/master)
