@@ -17,7 +17,7 @@
     }
   ],
   "require": {
-    "samsonos/cms_api": "*"
+    "samsoncms/api": "*"
   },
   "replace": {
     "samsoncms/seo_tags":"*"
