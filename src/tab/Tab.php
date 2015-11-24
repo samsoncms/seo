@@ -177,7 +177,5 @@ if (class_exists('\samsoncms\form\tab\Generic', false)) {
     }
 
 } else {
-    class Tab
-    {
-    }
+    class Tab{}
 }
