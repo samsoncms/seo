@@ -124,6 +124,11 @@ class Display
 
             // Get value
             $value = $this->getFieldBySchema($schema, $fieldName, $material, true);
+            
+            // Append server host to image link
+            if ($fieldName == '__SEO_Image') {
+                $value = 'http://'.$_SERVER['HTTP_HOST'].$value;
+            }
 
             // If site name in the facebook not found then set it as absolute url this page
             if (($value == '') && ($schema instanceof Facebook)) {
