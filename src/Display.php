@@ -143,8 +143,7 @@ class Display
      */
     public function getMaterialByUrl($url)
     {
-
-        return $this->query->className('samson\cms\CMSMaterial')->Url($url)->first();
+        return $this->query->className('samson\cms\CMSMaterial')->cond('Url', $url)->first();
     }
 
     /**
