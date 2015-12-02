@@ -13,7 +13,6 @@ use samsoncms\seo\render\Element;
 use samsonframework\core\RenderInterface;
 use samsonframework\orm\QueryInterface;
 use samsonframework\orm\Record;
-use samsonframework\orm\Relation;
 
 if (class_exists('\samsoncms\app\material\form\tab\LocaleTab', false)) {
 

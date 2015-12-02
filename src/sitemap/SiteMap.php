@@ -13,7 +13,6 @@ use samsoncms\seo\schema\control\ControlSchema;
 use samsoncms\seo\schema\control\sitemap\Dynamic;
 use samsoncms\seo\schema\control\sitemap\Statical;
 use samsoncms\seo\schema\Main;
-use samsonframework\orm\Relation;
 
 /**
  * Class SiteMap
