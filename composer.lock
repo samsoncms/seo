@@ -1,0 +1,221 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "267f798e1e26833859ee5d8bb9812871",
+    "content-hash": "05e6400cb213264ca871cea5c9c4df65",
+    "packages": [
+        {
+            "name": "samsoncms/api",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/samsoncms/api.git",
+                "reference": "b0fcbfd56f93eb0a51470ba6fcbcfab35017f5c8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/samsoncms/api/zipball/b0fcbfd56f93eb0a51470ba6fcbcfab35017f5c8",
+                "reference": "b0fcbfd56f93eb0a51470ba6fcbcfab35017f5c8",
+                "shasum": ""
+            },
+            "require": {
+                "samsonframework/base": "*",
+                "samsonframework/collection": "*",
+                "samsonframework/orm": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ],
+                "psr-4": {
+                    "samsoncms\\api\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Open Software License (OSL) v 3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Vitaly Iegorov",
+                    "email": "egorov@samsonos.com"
+                },
+                {
+                    "name": "Nikita Kotenko",
+                    "email": "kotenko@samsonos.com"
+                }
+            ],
+            "description": "SamsonCMS API module",
+            "homepage": "http://samsonos.com/",
+            "time": "2015-12-01 13:51:31"
+        },
+        {
+            "name": "samsonframework/base",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/samsonframework/base.git",
+                "reference": "4b2a0374c108730cd4b8210b3e33a594c50a4238"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/samsonframework/base/zipball/4b2a0374c108730cd4b8210b3e33a594c50a4238",
+                "reference": "4b2a0374c108730cd4b8210b3e33a594c50a4238",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.2.*"
+            },
+            "type": "library",
+            "extra": {
+                "samsonphp_package_compressable": "1",
+                "samson_module_include": "1"
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ],
+                "psr-4": {
+                    "samsonframework\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Open Software License (OSL) v 3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Vitaly Iegorov",
+                    "email": "egorov@samsonos.com"
+                }
+            ],
+            "description": "SamsonFramework base interfaces",
+            "homepage": "http://samsonos.com/",
+            "keywords": [
+                "base",
+                "interfaces",
+                "samsonframework"
+            ],
+            "time": "2015-12-02 07:48:12"
+        },
+        {
+            "name": "samsonframework/collection",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/samsonframework/collection.git",
+                "reference": "b33417c9a5324b7faa7b588be0d98683dc30eb6c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/samsonframework/collection/zipball/b33417c9a5324b7faa7b588be0d98683dc30eb6c",
+                "reference": "b33417c9a5324b7faa7b588be0d98683dc30eb6c",
+                "shasum": ""
+            },
+            "require": {
+                "samsonframework/base": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.2.*"
+            },
+            "type": "library",
+            "extra": {
+                "samsonphp_package_compressable": "1",
+                "samson_module_include": "1"
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ],
+                "psr-4": {
+                    "samsonframework\\collection\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Open Software License (OSL) v 3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Vitaly Iegorov",
+                    "email": "egorov@samsonos.com"
+                }
+            ],
+            "description": "Entity collection module",
+            "homepage": "http://samsonos.com/",
+            "keywords": [
+                "collection",
+                "collections",
+                "entities"
+            ],
+            "time": "2015-07-06 12:21:55"
+        },
+        {
+            "name": "samsonframework/orm",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/samsonframework/orm.git",
+                "reference": "e3ddbb5a303fe90d2da19c1c2790a2829c6506cf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/samsonframework/orm/zipball/e3ddbb5a303fe90d2da19c1c2790a2829c6506cf",
+                "reference": "e3ddbb5a303fe90d2da19c1c2790a2829c6506cf",
+                "shasum": ""
+            },
+            "require": {
+                "samsonframework/base": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "library",
+            "extra": {
+                "samsonphp_package_compressable": "1",
+                "samson_module_include": "1"
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ],
+                "psr-4": {
+                    "samsonframework\\orm\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Open Software License (OSL) v 3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Vitaly Iegorov",
+                    "email": "egorov@samsonos.com"
+                }
+            ],
+            "description": "SamsonFramework object-relational mapping",
+            "homepage": "http://samsonos.com/",
+            "keywords": [
+                "collection",
+                "collections",
+                "entities"
+            ],
+            "time": "2015-12-02 10:38:42"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
