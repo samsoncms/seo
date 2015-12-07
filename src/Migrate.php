@@ -256,6 +256,8 @@ class Migrate
         $structure->Url = $url;
         $structure->Active = 1;
         $structure->type = $type;
+        $structure->system = 1;
+        $structure->hidden = 1;
         $structure->ParentID = $parentId;
         $structure->save();
 
