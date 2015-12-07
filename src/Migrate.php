@@ -216,6 +216,7 @@ class Migrate
         $field->Name = $name;
         $field->Description = $description;
         $field->Type = $type;
+        $field->system = 1;
         $field->Value = $value;
         $field->Active = 1;
         $field->save();
@@ -342,6 +343,7 @@ class Migrate
         $material = new \samson\activerecord\material(false);
         $material->Name = $name;
         $material->Url = $url;
+        $material->system = 1;
         $material->Active = 1;
         $material->save();
 
