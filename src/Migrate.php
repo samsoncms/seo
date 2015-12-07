@@ -112,9 +112,6 @@ class Migrate
 
         // Create new relation if its not exists
         if (empty($sm)) {
-
-            trace('create', 1);
-
             $sm = new structurematerial(false);
             $sm->StructureID = $structure->StructureID;
             $sm->MaterialID = $material->MaterialID;
@@ -176,8 +173,6 @@ class Migrate
 
             // If field not exists then create it
             if (!$fieldInstance) {
-
-                trace('create field, type: ' . $field['Type'], 1);
                 // Create and add field to structure
                 $fieldInstance = $this->createField(
                     $field['Name'] . '_' . $prefix,
@@ -197,7 +192,6 @@ class Migrate
                     continue;
                 }
 
-                trace('assigned field', 1);
                 // Add field to structure
                 $this->assignFieldToStructure($structureId, $fieldInstance->FieldID);
 
