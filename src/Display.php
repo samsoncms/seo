@@ -143,7 +143,10 @@ class Display
      */
     public function getMaterialByUrl($url)
     {
-
+        // If is not empty
+        if (empty($url)) {
+            return null;
+        }
         return $this->query->className('samson\cms\CMSMaterial')->Url($url)->first();
     }
 
