@@ -210,19 +210,18 @@ class Core extends CompressableService
      */
     public function show()
     {
-
         // Class for work with data
-        $display = new Display($this->query);
+        $display = new Display($this->query, Schema::getMainSchema()->getStructure());
 
         // Get main material
-        $mainMaterial = $display->getNestedMaterial(Schema::getMainSchema()->getStructure());
+        $mainMaterial = $display->getMainMaterial();
+
+        // Get current material
+        $material = $display->getMaterialByUrl($display->getItemUrl());
 
         // Iterate all reserved schemas and output their data
         $html = '';
         foreach (Schema::getMaterialSchema() as $schema) {
-
-            // Get current material
-            $material = $display->getMaterialByUrl($display->getItemUrl());
 
             // Exclude publisher
             if ($schema instanceof \samsoncms\seo\schema\material\Publisher) {
@@ -257,7 +256,11 @@ class Core extends CompressableService
         // Get current material
         $material = $display->getMaterialByUrl($display->getItemUrl());
 
+        //elapsed('materialAgain');
+
         $dynamic = new Dynamic();
+
+        //elapsed('dinamic');
 
         $table = null;
         if (!empty($material)) {
@@ -279,8 +282,6 @@ class Core extends CompressableService
 
             $html .= $this->view($dynamic->view)->content(array_shift($tag))->output();
         }
-
-
 
         // Get all view of not assigned(single) material
         $html .= $display->getCommonViews($this);

@@ -8,7 +8,10 @@
 
 namespace samsoncms\seo;
 
+use samsoncms\api\SEONameStructureMetaQuery;
+use samsoncms\api\TestQuery;
 use samsoncms\seo\schema\control\seo\Dynamic;
+use samsoncms\seo\schema\material\Facebook;
 use samsoncms\seo\schema\material\Publisher;
 use samsoncms\seo\schema\Schema;
 
@@ -19,12 +22,23 @@ class Display
     public $query;
 
     /**
+     * @var array
+     */
+    public $materialByUrlCache = array();
+
+    /**
      * Init query
      * @param $query
+     * @param $mainStructure
      */
-    public function __construct($query)
+    public function __construct($query, $mainStructure)
     {
         $this->query = $query;
+
+        // Get material of main structure
+        $this->mainMaterial = dbQuery('\samson\cms\CMSMaterial')
+            ->cond('MaterialID', $mainStructure->MaterialID)
+            ->first();
     }
 
     /**
@@ -63,7 +77,6 @@ class Display
      */
     public function getFieldBySchema($schema, $fieldName, $material, $deep = false)
     {
-
         // Set field name with prefix of schema
         $fieldNameFull = $fieldName . '_' . $schema->id;
         $fieldValue = $this->getDataField($fieldNameFull, $material);
@@ -84,7 +97,7 @@ class Display
 
                 // If it is deep search i.e search in parent structures then change current material to parent
                 if ($deep == true) {
-                    $material = $this->getNestedMaterial(Schema::getMainSchema()->getStructure());
+                    $material = $this->getMainMaterial();
                 }
 
                 // Get data from material
@@ -112,7 +125,6 @@ class Display
      */
     public function findField($schema, $fieldName, $material)
     {
-
         // Find data in schema or sibling schemas
         $value = $this->getFieldBySchema($schema, $fieldName, $material);
 
@@ -120,7 +132,7 @@ class Display
         if (empty($value)) {
 
             // Get parent material
-            $material = $this->getNestedMaterial(Schema::getMainSchema()->getStructure());
+            $material = $this->getMainMaterial();
 
             // Get value
             $value = $this->getFieldBySchema($schema, $fieldName, $material, true);
@@ -151,7 +163,17 @@ class Display
         if (empty($url)) {
             return null;
         }
-        return $this->query->className('samson\cms\CMSMaterial')->cond('Url', $url)->first();
+
+        // If this material located in cache then return it
+        if (isset($this->materialByUrlCache[$url])) {
+            return $this->materialByUrlCache[$url];
+        }
+
+        $result = $this->query->className('samson\cms\CMSMaterial')->cond('Url', $url)->first();
+
+        $this->materialByUrlCache[$url] = $result;
+
+        return $result;
     }
 
     /**
@@ -180,16 +202,25 @@ class Display
 
     /**
      * Get nested material in structure
+     * @param $structure
      * @return null
      */
     public function getNestedMaterial($structure)
     {
-
         // Get nested material
         $material = null;
         $material = dbQuery('\samson\cms\CMSMaterial')->cond('MaterialID', $structure->MaterialID)->first();
 
         return $material;
+    }
+
+    /**
+     * Get material of main structure
+     * @return mixed
+     */
+    public function getMainMaterial()
+    {
+        return $this->mainMaterial;
     }
 
     /**
@@ -202,7 +233,7 @@ class Display
         $html = '';
 
         // Get main material
-        $material = $this->getNestedMaterial(Schema::getMainSchema()->getStructure());
+        $material = $this->getMainMaterial();
 
         // Get all single schemas
         foreach (array(new Publisher()) as $schema) {
