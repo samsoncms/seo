@@ -84,7 +84,10 @@ class Migrate
             $mainFields = $this->removeNotUsedFields($main->fields, $schema);
 
             // Assign main fields to structure
-            $this->buildFieldsToStructure($mainFields, $structure->id, $schema->id);
+            if ($schema->assignMainFields) {
+
+                $this->buildFieldsToStructure($mainFields, $structure->id, $schema->id);
+            }
 
             // Assign fields to structure
             $this->buildFieldsToStructure($schema->fields, $structure->id, $schema->id);
