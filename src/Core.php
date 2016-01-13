@@ -235,6 +235,8 @@ class Core extends CompressableService
             // Iterate all relations
             foreach ($schema->relations as $fieldName => $alias) {
 
+//                trace($fieldName,1);
+
                 // Find data in hierarchy of structures
                 $content = trim($display->findField($schema, $fieldName, $material));
 
