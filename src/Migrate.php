@@ -112,9 +112,6 @@ class Migrate
 
         // Create new relation if its not exists
         if (empty($sm)) {
-
-            trace('create', 1);
-
             $sm = new structurematerial(false);
             $sm->StructureID = $structure->StructureID;
             $sm->MaterialID = $material->MaterialID;
@@ -176,8 +173,6 @@ class Migrate
 
             // If field not exists then create it
             if (!$fieldInstance) {
-
-                trace('create field, type: ' . $field['Type'], 1);
                 // Create and add field to structure
                 $fieldInstance = $this->createField(
                     $field['Name'] . '_' . $prefix,
@@ -197,7 +192,6 @@ class Migrate
                     continue;
                 }
 
-                trace('assigned field', 1);
                 // Add field to structure
                 $this->assignFieldToStructure($structureId, $fieldInstance->FieldID);
 
@@ -222,6 +216,7 @@ class Migrate
         $field->Name = $name;
         $field->Description = $description;
         $field->Type = $type;
+        $field->system = 1;
         $field->Value = $value;
         $field->Active = 1;
         $field->save();
@@ -262,6 +257,8 @@ class Migrate
         $structure->Url = $url;
         $structure->Active = 1;
         $structure->type = $type;
+        $structure->system = 1;
+        $structure->hidden = 1;
         $structure->ParentID = $parentId;
         $structure->save();
 
@@ -346,6 +343,7 @@ class Migrate
         $material = new \samson\activerecord\material(false);
         $material->Name = $name;
         $material->Url = $url;
+        $material->system = 1;
         $material->Active = 1;
         $material->save();
 

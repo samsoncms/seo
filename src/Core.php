@@ -210,19 +210,18 @@ class Core extends CompressableService
      */
     public function show()
     {
-
         // Class for work with data
-        $display = new Display($this->query);
+        $display = new Display($this->query, Schema::getMainSchema()->getStructure());
 
         // Get main material
-        $mainMaterial = $display->getNestedMaterial(Schema::getMainSchema()->getStructure());
+        $mainMaterial = $display->getMainMaterial();
+
+        // Get current material
+        $material = $display->getMaterialByUrl($display->getItemUrl());
 
         // Iterate all reserved schemas and output their data
         $html = '';
         foreach (Schema::getMaterialSchema() as $schema) {
-
-            // Get current material
-            $material = $display->getMaterialByUrl($display->getItemUrl());
 
             // Exclude publisher
             if ($schema instanceof \samsoncms\seo\schema\material\Publisher) {
@@ -237,7 +236,7 @@ class Core extends CompressableService
             foreach ($schema->relations as $fieldName => $alias) {
 
                 // Find data in hierarchy of structures
-                $content = $display->findField($schema, $fieldName, $material);
+                $content = trim($display->findField($schema, $fieldName, $material));
 
                 // EXCLUDE Render title of page
                 if ($schema->id == 'meta' && $fieldName == '__SEO_Title') {
@@ -245,8 +244,7 @@ class Core extends CompressableService
                 }
 
                 // If content not empty render field(meta tag)
-                if (!empty($content)) {
-
+                if (isset($content{0})) {
                     // Save html view
                     $html .= $this->view($schema->view)->name($alias)->content($content)->output() . "\n";
                 }
@@ -256,7 +254,11 @@ class Core extends CompressableService
         // Get current material
         $material = $display->getMaterialByUrl($display->getItemUrl());
 
+        //elapsed('materialAgain');
+
         $dynamic = new Dynamic();
+
+        //elapsed('dinamic');
 
         $table = null;
         if (!empty($material)) {
@@ -279,11 +281,10 @@ class Core extends CompressableService
             $html .= $this->view($dynamic->view)->content(array_shift($tag))->output();
         }
 
-
-
         // Get all view of not assigned(single) material
         $html .= $display->getCommonViews($this);
 
+        //trace($html,1);
         // Show result
         return $this->view($this->viewIndex)->content($html)->output();
     }
@@ -295,9 +296,12 @@ class Core extends CompressableService
      * @param array $parameters Collection of data passed to current view
      * @param Module $module Pointer to active core module
      */
-    public function templateRenderer(&$html, &$parameters, &$module)
+    public function templateRenderer(&$html, $parameters, $module)
     {
-        $content = $this->show();
-        $html = str_ireplace('</head>', $content.'</head>', $html);
+        // TODO: Change this to normal dependency
+        if($module->id() != 'compressor') {
+            $content = $this->show();
+            $html = str_ireplace('</head>', $content . '</head>', $html);
+        }
     }
 }
