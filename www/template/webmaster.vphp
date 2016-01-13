@@ -1,0 +1,1 @@
+<link name="<?php iv('name'); ?>" content="<?php iv('content'); ?>"/>

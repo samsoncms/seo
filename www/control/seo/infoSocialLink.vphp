@@ -1,0 +1,4 @@
+<div>
+    <h1 style="font-weight: bold;margin-bottom: 10px"><?php t('Список ссылок на социальные сети') ?></h1>
+    <p>
+</div>

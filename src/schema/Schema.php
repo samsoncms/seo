@@ -40,6 +40,12 @@ abstract class Schema
     public $tabs = array();
 
     /**
+     * If need assign main fields to the structure
+     * @var bool
+     */
+    public $assignMainFields = true;
+
+    /**
      * Get structure id of current schema
      * @return null
      */
@@ -86,6 +92,8 @@ abstract class Schema
             new Publisher(),
             new \samsoncms\seo\schema\control\sitemap\Dynamic(),
             new \samsoncms\seo\schema\control\seo\Dynamic(),
+            new \samsoncms\seo\schema\control\seo\SocialLink(),
+            new \samsoncms\seo\schema\material\Webmaster(),
             new Statical(),
         );
 
