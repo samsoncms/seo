@@ -8,8 +8,6 @@
 
 namespace samsoncms\seo;
 
-use samsoncms\api\SEONameStructureMetaQuery;
-use samsoncms\api\TestQuery;
 use samsoncms\seo\schema\control\seo\Dynamic;
 use samsoncms\seo\schema\material\Facebook;
 use samsoncms\seo\schema\material\Publisher;
