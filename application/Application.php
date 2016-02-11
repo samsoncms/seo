@@ -43,9 +43,9 @@ if (class_exists('\samsoncms\Application', false)) {
 
                 // Get id
                 $materialID = $material->MaterialID;
-
+                
                 // Redirect to seo module
-                url()->redirect("/material/form/$materialID#seo_field_tab");
+                url()->redirect($this->system->module('cms')->baseUrl."/material/form/$materialID#seo_field_tab");
 
             } else {
                 //throw new \Exception('Main material of seo module not found');
