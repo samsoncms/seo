@@ -32,7 +32,7 @@ class InfoTab {
     {
         return $this->renderer
             ->view($this->indexView)
-            ->set('data', $this->data)
+            ->set($this->data, 'data')
             ->output();
     }
 
