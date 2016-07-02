@@ -54,6 +54,29 @@ class Dictionary implements IDictionary
                 "Что бы отобразить на сайте тег" => "Для відображення на сайті тегу",
                 "Просто введите" => "Просто введіть"
             ),
+            "de" => array(
+                "Модуль предназначен для вывода мета тегов на странице" => "Das Modul ist das Meta-Tag auf der Seite angezeigt werden",
+                "А также для генерации сайт мапа для сайта" => "Und auch saytmap für Website zu generieren",
+                "СЕО модуль" => "SEO-Modul",
+                "Введите значение" => "Geben Sie einen Wert",
+                "Заголовок" => "Kopfzeile",
+                "Описание" => "Beschreibung",
+                "Ключевые слова" => "Stichworte",
+                "Картинка" => "Bild",
+                "Порядок подключения тега Url" => "Um eine Verbindung tag URL",
+                "Если будет задан урл, то будет загружатся он" => "Wenn eine URL angegeben wird, dann wird es geladen",
+                "Если нет то поднянется родительский" => "Wenn nicht, zieht es die Eltern",
+                "Если не задано, то будет использован урл страницы материала" => "Wenn nicht angegeben, wird die URL der Seite, das Material verwendet werden",
+                "Имя сайта" => "Site Name",
+                "Название продукта" => "Produktnamen",
+                "Цена" => "Preis",
+                "Валюта" => "Währung",
+                "Автор" => "Autor",
+                "Издатель" => "Herausgeber",
+                "Динамические мета теги" => "Dynamische Meta-Tags",
+                "Что бы отобразить на сайте тег" => "Zur Anzeige Online den Tag",
+                "Просто введите" => "geben Sie Ihre"
+            ),
         );
     }
 }
