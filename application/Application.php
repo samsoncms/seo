@@ -29,12 +29,15 @@ if (class_exists('\samsoncms\Application', false)) {
         /**
          * Universal controller action.
          * Entity collection rendering
+         *
+         * @param int $page
          */
-        public function __handler()
+        public function __handler($page = 1)
         {
             // Find id main material of main structure
             $structureID = \samsoncms\seo\schema\Schema::getMainSchema()->getStructureId();
             $material = null;
+
             if (
             $this->query->className('structure')
                 ->cond('StructureID', $structureID)
